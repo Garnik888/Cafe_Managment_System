@@ -1,6 +1,8 @@
 package com.example.cafemanagementsystem.domain.entity;
 
 import com.example.cafemanagementsystem.domain.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,14 +19,16 @@ public class Order {
 
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus orderStatus;
 
     @Column(name = "data_time")
     private LocalDateTime dateTime;
+
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "table_id",nullable = false)
     private CafeTable cafeTable;
-
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "order",fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -39,23 +43,21 @@ public class Order {
 
 
     public Order(Long id,
-                 OrderStatus status,
+                 OrderStatus orderStatus,
                  LocalDateTime dateTime,
                  CafeTable cafeTable,
                  List<AssortmentOrder> assortmentOrderList) {
         this.id = id;
-        this.status = status;
+        this.orderStatus = orderStatus;
         this.dateTime = dateTime;
         this.cafeTable = cafeTable;
         this.assortmentOrderList = assortmentOrderList;
     }
 
-
-    public Order(Long id, OrderStatus status, LocalDateTime dateTime, CafeTable cafeTable) {
+    public Order(Long id, OrderStatus orderStatus, LocalDateTime dateTime) {
         this.id = id;
-        this.status = status;
+        this.orderStatus = orderStatus;
         this.dateTime = dateTime;
-        this.cafeTable = cafeTable;
     }
 
     public Long getId() {
@@ -66,12 +68,29 @@ public class Order {
         this.id = id;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public CafeTable getCafeTable() {
+        return cafeTable;
+    }
+
+    public void setCafeTable(CafeTable cafeTable) {
+        this.cafeTable = cafeTable;
+    }
+
+    public List<AssortmentOrder> getAssortmentOrderList() {
+        return assortmentOrderList;
+    }
+
+    public void setAssortmentOrderList(List<AssortmentOrder> assortmentOrderList) {
+        this.assortmentOrderList = assortmentOrderList;
     }
 
     public CafeTable getTableCafe() {
@@ -98,27 +117,28 @@ public class Order {
         this.dateTime = dateTime;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id) && status == order.status && Objects.equals(dateTime, order.dateTime) && Objects.equals(cafeTable, order.cafeTable) && Objects.equals(assortmentOrderList, order.assortmentOrderList);
+        return Objects.equals(id, order.id) && orderStatus == order.orderStatus && Objects.equals(dateTime, order.dateTime) && Objects.equals(cafeTable, order.cafeTable) && Objects.equals(assortmentOrderList, order.assortmentOrderList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, dateTime, cafeTable, assortmentOrderList);
+        return Objects.hash(id, orderStatus, dateTime, cafeTable, assortmentOrderList);
     }
 
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", status=" + status +
+                ", orderStatus=" + orderStatus +
                 ", dateTime=" + dateTime +
-                ", tableCafe=" + cafeTable +
-                ", productInOrderList=" + assortmentOrderList +
+                ", cafeTable=" + cafeTable +
+                ", assortmentOrderList=" + assortmentOrderList +
                 '}';
     }
 }

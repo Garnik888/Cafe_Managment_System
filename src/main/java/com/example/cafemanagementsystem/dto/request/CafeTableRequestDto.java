@@ -2,7 +2,6 @@ package com.example.cafemanagementsystem.dto.request;
 
 import com.example.cafemanagementsystem.domain.entity.User;
 
-import javax.persistence.*;
 import java.util.Objects;
 
 public class CafeTableRequestDto {

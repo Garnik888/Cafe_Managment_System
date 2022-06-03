@@ -1,6 +1,7 @@
 package com.example.cafemanagementsystem.domain.entity;
 
 import com.example.cafemanagementsystem.domain.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,6 +35,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRoleType;
 
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.PERSIST,

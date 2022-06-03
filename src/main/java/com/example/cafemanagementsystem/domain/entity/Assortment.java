@@ -20,17 +20,17 @@ public class Assortment {
 
     @Column(name = "assortment_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private AssortmentType assortment;
+    private AssortmentType assortmentType;
     @Column(name = "price", nullable = false)
     private Double price;
 
     public Assortment() {
     }
 
-    public Assortment(Long id, String name, AssortmentType assortment, Double price) {
+    public Assortment(Long id, String name, AssortmentType assortmentType, Double price) {
         this.id = id;
         this.name = name;
-        this.assortment = assortment;
+        this.assortmentType = assortmentType;
         this.price = price;
     }
 
@@ -58,17 +58,25 @@ public class Assortment {
         this.price = price;
     }
 
+    public AssortmentType getAssortmentType() {
+        return assortmentType;
+    }
+
+    public void setAssortmentType(AssortmentType assortmentType) {
+        this.assortmentType = assortmentType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Assortment assortment = (Assortment) o;
-        return Objects.equals(id, assortment.id) && Objects.equals(name, assortment.name) && Objects.equals(price, assortment.price);
+        Assortment that = (Assortment) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && assortmentType == that.assortmentType && Objects.equals(price, that.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price);
+        return Objects.hash(id, name, assortmentType, price);
     }
 
     @Override

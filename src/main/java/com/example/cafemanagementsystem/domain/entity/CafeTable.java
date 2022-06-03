@@ -1,6 +1,9 @@
 package com.example.cafemanagementsystem.domain.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -14,12 +17,13 @@ public class CafeTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "table_name",unique = true,nullable = false)
-    private String name;
+    @Column(name = "table_name", unique = true, nullable = false)
+    private String tableName;
 
-    @Column(name = "reserve",nullable = false)
-    private  boolean reserve;
+    @Column(name = "reserve", nullable = false)
+    private boolean reserve;
 
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "cafeTable",
             fetch = FetchType.LAZY,
@@ -28,8 +32,9 @@ public class CafeTable {
     )
     private List<Order> orders;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 
@@ -37,16 +42,19 @@ public class CafeTable {
 
     }
 
-    public CafeTable(Long id, String name, boolean reserve, List<Order> orders, User user) {
+    public CafeTable(Long id, String tableName, boolean reserve, List<Order> orders, User user) {
         this.id = id;
-        this.name = name;
+        this.tableName = tableName;
         this.reserve = reserve;
         this.orders = orders;
         this.user = user;
     }
 
-
-
+    public CafeTable(Long id, String tableName, boolean reserve) {
+        this.id = id;
+        this.tableName = tableName;
+        this.reserve = reserve;
+    }
 
     public Long getId() {
         return id;
@@ -56,12 +64,12 @@ public class CafeTable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     public List<Order> getOrders() {
@@ -93,19 +101,19 @@ public class CafeTable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CafeTable cafeTable = (CafeTable) o;
-        return reserve == cafeTable.reserve && Objects.equals(id, cafeTable.id) && Objects.equals(name, cafeTable.name) && Objects.equals(orders, cafeTable.orders) && Objects.equals(user, cafeTable.user);
+        return reserve == cafeTable.reserve && Objects.equals(id, cafeTable.id) && Objects.equals(tableName, cafeTable.tableName) && Objects.equals(orders, cafeTable.orders) && Objects.equals(user, cafeTable.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, reserve, orders, user);
+        return Objects.hash(id, tableName, reserve, orders, user);
     }
 
     @Override
     public String toString() {
-        return "TableCafe{" +
+        return "CafeTable{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", tableName='" + tableName + '\'' +
                 ", reserve=" + reserve +
                 ", orders=" + orders +
                 ", user=" + user +

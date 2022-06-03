@@ -1,6 +1,7 @@
 package com.example.cafemanagementsystem.domain.entity;
 
-import com.example.cafemanagementsystem.domain.enums.ProductInOrderStatus;
+import com.example.cafemanagementsystem.domain.enums.AssortmentStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.persistence.Table;
@@ -17,11 +18,12 @@ public class AssortmentOrder {
 
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProductInOrderStatus status;
+    private AssortmentStatus assortmentStatus;
 
     @Column(name = "count",nullable = false)
     private Integer count;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "order_id",nullable = false)
     private Order order;
@@ -33,22 +35,19 @@ public class AssortmentOrder {
     public AssortmentOrder() {
     }
 
-    public AssortmentOrder(Long id,
-                           ProductInOrderStatus status,
-                           Integer count,
-                           Order order,
-                           Assortment assortment) {
+    public AssortmentOrder(Long id, AssortmentStatus assortmentStatus, Integer count, Order order, Assortment assortment) {
         this.id = id;
-        this.status = status;
+        this.assortmentStatus = assortmentStatus;
         this.count = count;
         this.order = order;
         this.assortment = assortment;
     }
 
-    public AssortmentOrder(Long id, ProductInOrderStatus status, Integer count) {
+    public AssortmentOrder(Long id, AssortmentStatus assortmentStatus, Integer count, Order order) {
         this.id = id;
-        this.status = status;
+        this.assortmentStatus = assortmentStatus;
         this.count = count;
+        this.order = order;
     }
 
     public Long getId() {
@@ -59,12 +58,12 @@ public class AssortmentOrder {
         this.id = id;
     }
 
-    public ProductInOrderStatus getStatus() {
-        return status;
+    public AssortmentStatus getAssortmentStatus() {
+        return assortmentStatus;
     }
 
-    public void setStatus(ProductInOrderStatus status) {
-        this.status = status;
+    public void setAssortmentStatus(AssortmentStatus assortmentStatus) {
+        this.assortmentStatus = assortmentStatus;
     }
 
     public Integer getCount() {
@@ -96,19 +95,19 @@ public class AssortmentOrder {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AssortmentOrder that = (AssortmentOrder) o;
-        return Objects.equals(id, that.id) && status == that.status && Objects.equals(count, that.count) && Objects.equals(order, that.order) && Objects.equals(assortment, that.assortment);
+        return Objects.equals(id, that.id) && assortmentStatus == that.assortmentStatus && Objects.equals(count, that.count) && Objects.equals(order, that.order) && Objects.equals(assortment, that.assortment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, count, order, assortment);
+        return Objects.hash(id, assortmentStatus, count, order, assortment);
     }
 
     @Override
     public String toString() {
         return "AssortmentOrder{" +
                 "id=" + id +
-                ", status=" + status +
+                ", assortmentStatus=" + assortmentStatus +
                 ", count=" + count +
                 ", order=" + order +
                 ", assortment=" + assortment +

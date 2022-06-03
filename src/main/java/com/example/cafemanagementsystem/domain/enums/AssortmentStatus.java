@@ -1,6 +1,6 @@
 package com.example.cafemanagementsystem.domain.enums;
 
-public enum ProductInOrderStatus {
+public enum AssortmentStatus {
     ACTIVE,
     CANCELLED
 }
