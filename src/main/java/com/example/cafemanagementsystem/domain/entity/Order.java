@@ -3,7 +3,7 @@ package com.example.cafemanagementsystem.domain.entity;
 import com.example.cafemanagementsystem.domain.enums.OrderStatus;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,41 +15,47 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "status")
+    @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Column(name = "create_date")
-    private LocalDate createDate;
-    @ManyToOne
-    @JoinColumn(name = "table_id")
-    private TableCafe tableCafe;
+    @Column(name = "data_time")
+    private LocalDateTime dateTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "table_id",nullable = false)
+    private CafeTable cafeTable;
 
     @OneToMany(
-            mappedBy = "order",
+            mappedBy = "order",fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ProductInOrder> productInOrderList;
+    private List<AssortmentOrder> assortmentOrderList;
 
     public Order() {
+
+        this.dateTime = LocalDateTime.now();
     }
 
-    public Order(Long id, OrderStatus status, LocalDate createDate, TableCafe tableCafe) {
-        this.id = id;
-        this.status = status;
-        this.createDate = createDate;
-        this.tableCafe = tableCafe;
-    }
 
     public Order(Long id,
-                 OrderStatus status, LocalDate createDate, TableCafe tableCafe,
-                 List<ProductInOrder> productInOrderList) {
+                 OrderStatus status,
+                 LocalDateTime dateTime,
+                 CafeTable cafeTable,
+                 List<AssortmentOrder> assortmentOrderList) {
         this.id = id;
         this.status = status;
-        this.createDate = createDate;
-        this.tableCafe = tableCafe;
-        this.productInOrderList = productInOrderList;
+        this.dateTime = dateTime;
+        this.cafeTable = cafeTable;
+        this.assortmentOrderList = assortmentOrderList;
+    }
+
+
+    public Order(Long id, OrderStatus status, LocalDateTime dateTime, CafeTable cafeTable) {
+        this.id = id;
+        this.status = status;
+        this.dateTime = dateTime;
+        this.cafeTable = cafeTable;
     }
 
     public Long getId() {
@@ -68,28 +74,28 @@ public class Order {
         this.status = status;
     }
 
-    public TableCafe getTableCafe() {
-        return tableCafe;
+    public CafeTable getTableCafe() {
+        return cafeTable;
     }
 
-    public void setTableCafe(TableCafe tableCafe) {
-        this.tableCafe = tableCafe;
+    public void setTableCafe(CafeTable cafeTable) {
+        this.cafeTable = cafeTable;
     }
 
-    public List<ProductInOrder> getProductInOrderList() {
-        return productInOrderList;
+    public List<AssortmentOrder> getProductInOrderList() {
+        return assortmentOrderList;
     }
 
-    public void setProductInOrderList(List<ProductInOrder> productInOrderList) {
-        this.productInOrderList = productInOrderList;
+    public void setProductInOrderList(List<AssortmentOrder> assortmentOrderList) {
+        this.assortmentOrderList = assortmentOrderList;
     }
 
-    public LocalDate getCreateDate() {
-        return createDate;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setCreateDate(LocalDate createDate) {
-        this.createDate = createDate;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     @Override
@@ -97,12 +103,12 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id) && status == order.status && Objects.equals(createDate, order.createDate) && Objects.equals(tableCafe, order.tableCafe) && Objects.equals(productInOrderList, order.productInOrderList);
+        return Objects.equals(id, order.id) && status == order.status && Objects.equals(dateTime, order.dateTime) && Objects.equals(cafeTable, order.cafeTable) && Objects.equals(assortmentOrderList, order.assortmentOrderList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, createDate, tableCafe, productInOrderList);
+        return Objects.hash(id, status, dateTime, cafeTable, assortmentOrderList);
     }
 
     @Override
@@ -110,9 +116,9 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", status=" + status +
-                ", createDate=" + createDate +
-                ", tableCafe=" + tableCafe +
-                ", productInOrderList=" + productInOrderList +
+                ", dateTime=" + dateTime +
+                ", tableCafe=" + cafeTable +
+                ", productInOrderList=" + assortmentOrderList +
                 '}';
     }
 }

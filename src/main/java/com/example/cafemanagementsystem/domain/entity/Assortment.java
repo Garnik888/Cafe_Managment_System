@@ -1,30 +1,36 @@
 package com.example.cafemanagementsystem.domain.entity;
 
+import com.example.cafemanagementsystem.domain.enums.AssortmentType;
+
 import javax.persistence.*;
 import javax.persistence.Table;
 import java.util.Objects;
 
 
 @Entity
-@Table(name = "product")
-public class Product {
+@Table(name = "assortment")
+public class Assortment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_name", unique = true)
+    @Column(name = "assortment_name", unique = true,nullable = false)
     private String name;
 
-    @Column(name = "price")
+    @Column(name = "assortment_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AssortmentType assortment;
+    @Column(name = "price", nullable = false)
     private Double price;
 
-    public Product() {
+    public Assortment() {
     }
 
-    public Product(Long id, String name, Double price) {
+    public Assortment(Long id, String name, AssortmentType assortment, Double price) {
         this.id = id;
         this.name = name;
+        this.assortment = assortment;
         this.price = price;
     }
 
@@ -56,8 +62,8 @@ public class Product {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(price, product.price);
+        Assortment assortment = (Assortment) o;
+        return Objects.equals(id, assortment.id) && Objects.equals(name, assortment.name) && Objects.equals(price, assortment.price);
     }
 
     @Override

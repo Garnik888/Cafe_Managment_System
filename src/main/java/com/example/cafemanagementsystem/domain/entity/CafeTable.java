@@ -7,36 +7,37 @@ import java.util.Objects;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "table_cafe")
-public class TableCafe {
+@Table(name = "cafe_table")
+public class CafeTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "table_name",unique = true,nullable = false)
     private String name;
 
-    @Column(name = "reserve")
+    @Column(name = "reserve",nullable = false)
     private  boolean reserve;
 
     @OneToMany(
-            mappedBy = "tableCafe",
+            mappedBy = "cafeTable",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST,
             orphanRemoval = true
     )
     private List<Order> orders;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
 
-    public TableCafe() {
+    public CafeTable() {
 
     }
 
-    public TableCafe(Long id, String name, boolean reserve, List<Order> orders, User user) {
+    public CafeTable(Long id, String name, boolean reserve, List<Order> orders, User user) {
         this.id = id;
         this.name = name;
         this.reserve = reserve;
@@ -91,8 +92,8 @@ public class TableCafe {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TableCafe tableCafe = (TableCafe) o;
-        return reserve == tableCafe.reserve && Objects.equals(id, tableCafe.id) && Objects.equals(name, tableCafe.name) && Objects.equals(orders, tableCafe.orders) && Objects.equals(user, tableCafe.user);
+        CafeTable cafeTable = (CafeTable) o;
+        return reserve == cafeTable.reserve && Objects.equals(id, cafeTable.id) && Objects.equals(name, cafeTable.name) && Objects.equals(orders, cafeTable.orders) && Objects.equals(user, cafeTable.user);
     }
 
     @Override

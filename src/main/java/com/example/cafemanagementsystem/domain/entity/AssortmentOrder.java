@@ -8,37 +8,47 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "product_in_order")
-public class ProductInOrder {
+@Table(name = "assortment_order")
+public class AssortmentOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "status")
+    @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductInOrderStatus status;
 
-    @Column(name = "count")
+    @Column(name = "count",nullable = false)
     private Integer count;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "order_id",nullable = false)
     private Order order;
 
-    @OneToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assortment_id",nullable = false)
+    private Assortment assortment;
 
-    public ProductInOrder() {
+    public AssortmentOrder() {
     }
 
-    public ProductInOrder(Long id, ProductInOrderStatus status, Integer count, Order order, Product product) {
+    public AssortmentOrder(Long id,
+                           ProductInOrderStatus status,
+                           Integer count,
+                           Order order,
+                           Assortment assortment) {
         this.id = id;
         this.status = status;
         this.count = count;
         this.order = order;
-        this.product = product;
+        this.assortment = assortment;
+    }
+
+    public AssortmentOrder(Long id, ProductInOrderStatus status, Integer count) {
+        this.id = id;
+        this.status = status;
+        this.count = count;
     }
 
     public Long getId() {
@@ -73,35 +83,35 @@ public class ProductInOrder {
         this.order = order;
     }
 
-    public Product getProduct() {
-        return product;
+    public Assortment getAssortment() {
+        return assortment;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setAssortment(Assortment assortment) {
+        this.assortment = assortment;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductInOrder that = (ProductInOrder) o;
-        return Objects.equals(id, that.id) && status == that.status && Objects.equals(count, that.count) && Objects.equals(order, that.order) && Objects.equals(product, that.product);
+        AssortmentOrder that = (AssortmentOrder) o;
+        return Objects.equals(id, that.id) && status == that.status && Objects.equals(count, that.count) && Objects.equals(order, that.order) && Objects.equals(assortment, that.assortment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, count, order, product);
+        return Objects.hash(id, status, count, order, assortment);
     }
 
     @Override
     public String toString() {
-        return "ProductInOrder{" +
+        return "AssortmentOrder{" +
                 "id=" + id +
                 ", status=" + status +
                 ", count=" + count +
                 ", order=" + order +
-                ", product=" + product +
+                ", assortment=" + assortment +
                 '}';
     }
 }

@@ -39,7 +39,7 @@ public class User {
             cascade = CascadeType.PERSIST,
             orphanRemoval = true
     )
-    private List<TableCafe> tables;
+    private List<CafeTable> tables;
 
     public User() {
     }
@@ -51,7 +51,7 @@ public class User {
                 String password,
                 Boolean active,
                 UserRole userRoleType,
-                List<TableCafe> tables) {
+                List<CafeTable> tables) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -118,11 +118,11 @@ public class User {
         this.userRoleType = userRoleType;
     }
 
-    public List<TableCafe> getTables() {
+    public List<CafeTable> getTables() {
         return tables;
     }
 
-    public void setTables(List<TableCafe> tables) {
+    public void setTables(List<CafeTable> tables) {
         this.tables = tables;
     }
 
