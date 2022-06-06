@@ -1,5 +1,7 @@
 package com.example.cafemanagementsystem.dto.request;
 
+import com.example.cafemanagementsystem.domain.enums.UserRole;
+
 import java.util.Objects;
 
 public class UserRequestDto {
@@ -8,9 +10,20 @@ public class UserRequestDto {
     private String lastName;
     private String userName;
     private String password;
+
+    private UserRole userRoleType;
     private Boolean active;
 
     public UserRequestDto() {
+    }
+
+    public UserRequestDto(String firstName, String lastName, String userName, String password, UserRole userRoleType, Boolean active) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.userRoleType = userRoleType;
+        this.active = active;
     }
 
     public UserRequestDto(String firstName, String lastName, String userName, String password, Boolean active) {
@@ -61,6 +74,14 @@ public class UserRequestDto {
         this.active = active;
     }
 
+    public UserRole getUserRoleType() {
+        return userRoleType;
+    }
+
+    public void setUserRoleType(UserRole userRoleType) {
+        this.userRoleType = userRoleType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,4 +107,5 @@ public class UserRequestDto {
                 ", active=" + active +
                 '}';
     }
+
 }
