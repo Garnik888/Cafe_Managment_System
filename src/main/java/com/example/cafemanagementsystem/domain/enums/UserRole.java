@@ -1,17 +1,28 @@
 package com.example.cafemanagementsystem.domain.enums;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public enum UserRole {
-    ADMIN("admin"),
-    MANAGER("manager"),
-    WAITER("waiter");
+    ADMIN(Set.of(Permission.ADMIN_READ,Permission.ADMIN_WRITE)),
+    MANAGER(Set.of(Permission.MANAGER_READ,Permission.MANAGER_WRITE)),
+    WAITER(Set.of(Permission.WAITER_READ,Permission.WAITER_WRITE));
 
-    private final String permission;
+    private final Set<Permission> permissions;
 
-    UserRole(String permission) {
-        this.permission = permission;
+    UserRole(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
+    public Set<Permission> getPermissions() {
+        return permissions;
     }
 
-    public String getPermission() {
-        return permission;
+    public Set<SimpleGrantedAuthority> getAuthorities() {
+
+        return getPermissions().stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+                .collect(Collectors.toSet());
     }
 }

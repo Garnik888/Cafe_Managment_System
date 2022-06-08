@@ -16,9 +16,7 @@ public class AssortmentOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "status",nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AssortmentStatus assortmentStatus;
+
 
     @Column(name = "count",nullable = false)
     private Integer count;
@@ -35,17 +33,15 @@ public class AssortmentOrder {
     public AssortmentOrder() {
     }
 
-    public AssortmentOrder(Long id, AssortmentStatus assortmentStatus, Integer count, Order order, Assortment assortment) {
+    public AssortmentOrder(Long id, Integer count, Order order, Assortment assortment) {
         this.id = id;
-        this.assortmentStatus = assortmentStatus;
         this.count = count;
         this.order = order;
         this.assortment = assortment;
     }
 
-    public AssortmentOrder(Long id, AssortmentStatus assortmentStatus, Integer count, Order order) {
+    public AssortmentOrder(Long id, Integer count, Order order) {
         this.id = id;
-        this.assortmentStatus = assortmentStatus;
         this.count = count;
         this.order = order;
     }
@@ -58,13 +54,6 @@ public class AssortmentOrder {
         this.id = id;
     }
 
-    public AssortmentStatus getAssortmentStatus() {
-        return assortmentStatus;
-    }
-
-    public void setAssortmentStatus(AssortmentStatus assortmentStatus) {
-        this.assortmentStatus = assortmentStatus;
-    }
 
     public Integer getCount() {
         return count;
@@ -95,19 +84,18 @@ public class AssortmentOrder {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AssortmentOrder that = (AssortmentOrder) o;
-        return Objects.equals(id, that.id) && assortmentStatus == that.assortmentStatus && Objects.equals(count, that.count) && Objects.equals(order, that.order) && Objects.equals(assortment, that.assortment);
+        return Objects.equals(id, that.id)  && Objects.equals(count, that.count) && Objects.equals(order, that.order) && Objects.equals(assortment, that.assortment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, assortmentStatus, count, order, assortment);
+        return Objects.hash(id, count, order, assortment);
     }
 
     @Override
     public String toString() {
         return "AssortmentOrder{" +
                 "id=" + id +
-                ", assortmentStatus=" + assortmentStatus +
                 ", count=" + count +
                 ", order=" + order +
                 ", assortment=" + assortment +

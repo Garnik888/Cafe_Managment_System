@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,10 +35,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
-        userRepository.findByEmail(signUpRequestDto.getEmail()).ifPresent(user -> {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with email =  " + signUpRequestDto.getEmail() + " already exist");
-        });
+    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) throws UserPrincipalNotFoundException {
+        userRepository.findByEmail(signUpRequestDto.getEmail()).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("User with email =  " + signUpRequestDto.getEmail() + " already exist")));
+
         User user = modelMapper.map(signUpRequestDto, User.class);
         user.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
         user.setActive(false);
