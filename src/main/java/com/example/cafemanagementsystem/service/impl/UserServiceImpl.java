@@ -36,7 +36,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) throws UserPrincipalNotFoundException {
-        userRepository.findByEmail(signUpRequestDto.getEmail()).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("User with email =  " + signUpRequestDto.getEmail() + " already exist")));
+        userRepository.findByEmail(signUpRequestDto.getEmail()).ifPresent(user -> {
+            try {
+                throw new UserPrincipalNotFoundException( "User with username = " + signUpRequestDto.getFirstName() + "already exist");
+            } catch (UserPrincipalNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         User user = modelMapper.map(signUpRequestDto, User.class);
         user.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
@@ -46,18 +52,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SignInResponseDto signIn(String email, String password) {
+    public SignInResponseDto signIn(String email, String password) throws UserPrincipalNotFoundException {
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "No such user with email = " + email));
+                .orElseThrow(() ->new UserPrincipalNotFoundException(
+                        "No such user with email = " + email));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Wrong password or username");
         }
-
         user.setActive(true);
         userRepository.save(user);
         SignInResponseDto signInResponseDto = new SignInResponseDto();

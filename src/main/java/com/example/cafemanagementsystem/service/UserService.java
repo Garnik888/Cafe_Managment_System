@@ -16,7 +16,7 @@ public interface UserService {
     @Transactional
     SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) throws UserPrincipalNotFoundException;
 
-    SignInResponseDto signIn(String username, String password);
+    SignInResponseDto signIn(String username, String password) throws UserPrincipalNotFoundException;
 
 
 }
