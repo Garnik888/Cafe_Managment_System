@@ -9,6 +9,8 @@ public class UserRequestDto {
     private String firstName;
     private String lastName;
     private String userName;
+
+    private  String email;
     private String password;
 
     private UserRole userRoleType;
@@ -17,20 +19,15 @@ public class UserRequestDto {
     public UserRequestDto() {
     }
 
-    public UserRequestDto(String firstName, String lastName, String userName, String password, UserRole userRoleType, Boolean active) {
+    public UserRequestDto(String firstName, String lastName,
+                          String userName, String email, String password,
+                          UserRole userRoleType, Boolean active) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
+        this.email = email;
         this.password = password;
         this.userRoleType = userRoleType;
-        this.active = active;
-    }
-
-    public UserRequestDto(String firstName, String lastName, String userName, String password, Boolean active) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
         this.active = active;
     }
 
@@ -82,6 +79,14 @@ public class UserRequestDto {
         this.userRoleType = userRoleType;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,8 +109,10 @@ public class UserRequestDto {
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", userRoleType=" + userRoleType +
                 ", active=" + active +
                 '}';
     }
-
 }

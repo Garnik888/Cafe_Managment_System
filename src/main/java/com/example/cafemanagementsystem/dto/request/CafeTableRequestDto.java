@@ -8,12 +8,12 @@ public class CafeTableRequestDto {
 
     private String tableName;
     private Boolean reserve;
-    private User user;
+    private UserRequestDto user;
 
     public CafeTableRequestDto() {
     }
 
-    public CafeTableRequestDto(String tableName, Boolean reserve, User user) {
+    public CafeTableRequestDto(String tableName, Boolean reserve, UserRequestDto user) {
         this.tableName = tableName;
         this.reserve = reserve;
         this.user = user;
@@ -35,11 +35,11 @@ public class CafeTableRequestDto {
         this.reserve = reserve;
     }
 
-    public User getUser() {
+    public UserRequestDto getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserRequestDto user) {
         this.user = user;
     }
 
