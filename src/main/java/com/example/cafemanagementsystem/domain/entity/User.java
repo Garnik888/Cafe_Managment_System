@@ -34,7 +34,7 @@ public class User {
     private String password;
 
     @Column(name = "active")
-    private Boolean active;
+    private Boolean active = false;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
@@ -43,7 +43,6 @@ public class User {
     @JsonManagedReference
     @OneToMany(
             mappedBy = "user",
-            cascade = CascadeType.PERSIST,
             orphanRemoval = true
     )
     private List<CafeTable> tables;

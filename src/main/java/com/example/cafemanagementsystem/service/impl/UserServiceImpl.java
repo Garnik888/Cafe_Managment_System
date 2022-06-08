@@ -1,7 +1,6 @@
 package com.example.cafemanagementsystem.service.impl;
 
 import com.example.cafemanagementsystem.domain.entity.User;
-import com.example.cafemanagementsystem.domain.enums.UserRole;
 import com.example.cafemanagementsystem.dto.request.SignUpRequestDto;
 import com.example.cafemanagementsystem.dto.responce.SignInResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignUpResponseDto;
@@ -18,47 +17,54 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 
 @Service
-public class UserServiceImpl  implements UserService {
+public class UserServiceImpl implements UserService {
 
 
-        private final UserRepo userRepository;
-        private final JwtTokenUtil jwtTokenUtil;
-        private  final ModelMapper modelMapper;
-        private final BCryptPasswordEncoder passwordEncoder;
+    private final UserRepo userRepository;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-        @Autowired
-        public UserServiceImpl(UserRepo userRepository,JwtTokenUtil jwtTokenUtil, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder) {
-            this.userRepository = userRepository;
-            this.jwtTokenUtil = jwtTokenUtil;
-            this.modelMapper = modelMapper;
-            this.passwordEncoder = passwordEncoder;
-        }
+    @Autowired
+    public UserServiceImpl(UserRepo userRepository, JwtTokenUtil jwtTokenUtil, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-        @Transactional
-        @Override
-        public SignUpResponseDto createUser(SignUpRequestDto signUpRequestDto) {
-            userRepository.findByEmail(signUpRequestDto.getEmail()).ifPresent(user -> {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "User with email = " + signUpRequestDto.getEmail() + "already exist");
-            });
-            User user =modelMapper.map(signUpRequestDto,User.class);
-            user.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
-            userRepository.save(user);
-            SignUpResponseDto signUpResponseDto=modelMapper.map(user,SignUpResponseDto.class);
-            return signUpResponseDto;
-        }
+    @Transactional
+    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
+        userRepository.findByEmail(signUpRequestDto.getEmail()).ifPresent(user -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with email =  " + signUpRequestDto.getEmail() + " already exist");
+        });
+        User user = modelMapper.map(signUpRequestDto, User.class);
+        user.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
+        user.setActive(false);
+      return   modelMapper.map(userRepository.save(user), SignUpResponseDto.class);
+
+    }
 
     @Override
-        public SignInResponseDto signIn(String email, String password) {
-            User user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user with email = " + email));
+    public SignInResponseDto signIn(String email, String password) {
 
-            if (!passwordEncoder.matches(password, user.getPassword())) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong password or username");
-            }
-SignInResponseDto signInResponseDto=new SignInResponseDto();
-            signInResponseDto.setToken(jwtTokenUtil.generateToken(user.getPassword()));
-            signInResponseDto.setType(String.valueOf(user.getRoleType()));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "No such user with email = " + email));
 
-            return  signInResponseDto;
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Wrong password or username");
         }
+
+        user.setActive(true);
+        userRepository.save(user);
+        SignInResponseDto signInResponseDto = new SignInResponseDto();
+
+        signInResponseDto.setToken(jwtTokenUtil.generateToken(user.getPassword()));
+        signInResponseDto.setType(String.valueOf(user.getRoleType()));
+
+        return signInResponseDto;
     }
+}

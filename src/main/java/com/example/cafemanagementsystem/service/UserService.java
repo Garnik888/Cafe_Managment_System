@@ -11,8 +11,9 @@ import javax.transaction.Transactional;
 public interface UserService {
 
 
+
     @Transactional
-    SignUpResponseDto createUser(SignUpRequestDto signUpRequestDto);
+    SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto);
 
     SignInResponseDto signIn(String username, String password);
 

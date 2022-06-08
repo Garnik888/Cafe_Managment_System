@@ -1,8 +1,17 @@
 package com.example.cafemanagementsystem.domain.enums;
 
 public enum UserRole {
-    ADMIN,
-    MANAGER,
+    ADMIN("admin"),
+    MANAGER("manager"),
+    WAITER("waiter");
 
-    WAITER
+    private final String permission;
+
+    UserRole(String permission) {
+        this.permission = permission;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
 }
