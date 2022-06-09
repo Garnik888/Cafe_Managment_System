@@ -8,6 +8,8 @@ import com.example.cafemanagementsystem.dto.responce.CafeTableResponseDto;
 import com.example.cafemanagementsystem.service.CafeTableService;
 import com.example.cafemanagementsystem.service.impl.CafeTableServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -30,10 +32,13 @@ public class CafeTableController {
         this.cafeTableService = cafeTableService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> saveCafeTable(@RequestBody CafeTableRequestDto cafeTableRequestDto) throws Exception {
 
-        CafeTableResponseDto cafeTableResponseDto = cafeTableService.createCafeTable(cafeTableRequestDto);
+    @Operation(summary = "Save cafe table",  security = @SecurityRequirement(name = "bearerAuth"))
+    @PostMapping("/{id}")
+    public ResponseEntity<?> saveCafeTable(@PathVariable("id") Long userId,
+                                           @RequestBody CafeTableRequestDto cafeTableRequestDto) throws Exception {
+
+        CafeTableResponseDto cafeTableResponseDto = cafeTableService.createCafeTable(userId, cafeTableRequestDto);
 
         if(cafeTableResponseDto != null) {
 

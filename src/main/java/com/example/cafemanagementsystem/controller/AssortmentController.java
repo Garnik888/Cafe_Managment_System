@@ -25,7 +25,7 @@ public class AssortmentController {
         this.assortmentService = assortmentService;
     }
 
-    @Operation(summary = "Create new product", description = "", tags = {"product-management"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Create new product", description = "zzz", tags = {"product-management"}, security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Product created",
                     content = @Content(schema = @Schema(implementation = AssortmentResponseDto.class))),

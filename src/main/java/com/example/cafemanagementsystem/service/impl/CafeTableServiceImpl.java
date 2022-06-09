@@ -36,21 +36,27 @@ import java.util.Set;
             this.userRepository = userRepository;
         }
 
-        public CafeTableResponseDto createCafeTable(CafeTableRequestDto cafeTableRequestDto) throws Exception {
 
-            CafeTable cafeTable = modelMapper.map(cafeTableRequestDto, CafeTable.class);
+            public CafeTableResponseDto createCafeTable(Long userId, CafeTableRequestDto cafeTableRequestDto) throws Exception {
 
-            Optional<User> getUser = userRepository.findByEmail(cafeTableRequestDto.getUser().getEmail());
+                CafeTable cafeTable = modelMapper.map(cafeTableRequestDto, CafeTable.class);
 
-            if(getUser.isEmpty()) {
+                if(cafeTable == null) {
 
-                throw new Exception("Not fund user");
+                    throw new Exception("Cafe table is null");
+                }
+
+                Optional<User> getUser = userRepository.findById(userId);
+
+                if(getUser.isEmpty()) {
+
+                    throw new Exception("Not find user");
+                }
+
+                cafeTable.setUser(modelMapper.map(getUser, User.class));
+
+                return modelMapper.map(cafeTableRepo.save(cafeTable), CafeTableResponseDto.class);
             }
-
-            cafeTable.setUser(modelMapper.map(getUser, User.class));
-
-            return modelMapper.map(cafeTableRepo.save(cafeTable), CafeTableResponseDto.class);
-        }
 
         public CafeTableResponseDto deleteById(Long id) throws Exception {
 
