@@ -1,10 +1,9 @@
 package com.example.cafemanagementsystem.domain.entity;
 
-import com.example.cafemanagementsystem.domain.enums.UserRole;
+import com.example.cafemanagementsystem.domain.enums.RoleType;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,9 +22,6 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email", unique = true)
-    @Email
-    private  String email;
 
     @Column(name = "username", unique = true)
     private String username;
@@ -36,9 +32,10 @@ public class User {
     @Column(name = "active")
     private Boolean active = false;
 
-    @Column(name = "role")
+    @Column(name = "user_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserRole userRoleType;
+    private RoleType roleType;
+
 
     @JsonManagedReference
     @OneToMany(
@@ -47,26 +44,38 @@ public class User {
     )
     private List<CafeTable> tables;
 
-    public User() {
-    }
 
-    public User(String firstName,
-                String lastName,
-                String email,
-                String username,
-                String password,
-                Boolean active,
-                UserRole userRoleType,
-                List<CafeTable> tables) {
+    public User(Long id, String firstName,
+                String lastName,String username, String password, Boolean active,
+                RoleType roleType, List<CafeTable> tables) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.username = username;
         this.password = password;
         this.active = active;
-        this.userRoleType = userRoleType;
+        this.roleType = roleType;
         this.tables = tables;
     }
+
+    public User(Long id, String firstName,
+                String lastName,
+                String username, String password,
+                Boolean active, RoleType roleType) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.roleType = roleType;
+    }
+
+    public User() {
+    }
+
+
+
 
     public Long getId() {
         return id;
@@ -92,21 +101,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public UserRole getUserRoleType() {
-        return userRoleType;
-    }
-
-    public void setUserRoleType(UserRole userRoleType) {
-        this.userRoleType = userRoleType;
-    }
 
     public String getUsername() {
         return username;
@@ -132,13 +126,6 @@ public class User {
         this.active = active;
     }
 
-    public UserRole getRoleType() {
-        return userRoleType;
-    }
-
-    public void setRoleType(UserRole userRoleType) {
-        this.userRoleType = userRoleType;
-    }
 
     public List<CafeTable> getTables() {
         return tables;
@@ -148,30 +135,24 @@ public class User {
         this.tables = tables;
     }
 
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(active, user.active) && userRoleType == user.userRoleType && Objects.equals(tables, user.tables);
+        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName)  && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(active, user.active) && roleType == user.roleType && Objects.equals(tables, user.tables);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, username, password, active, userRoleType, tables);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", active=" + active +
-                ", userRoleType=" + userRoleType +
-                '}';
+        return Objects.hash(id, firstName, lastName,username, password, active, roleType, tables);
     }
 }

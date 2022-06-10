@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) throws UserPrincipalNotFoundException {
-        userRepository.findByEmail(signUpRequestDto.getEmail()).ifPresent(user -> {
+        userRepository.findByUsername(signUpRequestDto.getUsername()).ifPresent(user -> {
             try {
                 throw new UserPrincipalNotFoundException( "User with username = " + signUpRequestDto.getFirstName() + "already exist");
             } catch (UserPrincipalNotFoundException e) {
@@ -52,11 +52,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SignInResponseDto signIn(String email, String password) throws UserPrincipalNotFoundException {
+    public SignInResponseDto signIn(String username, String password) throws UserPrincipalNotFoundException {
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() ->new UserPrincipalNotFoundException(
-                        "No such user with email = " + email));
+                        "No such user with username = " + username));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         SignInResponseDto signInResponseDto = new SignInResponseDto();
 
-        signInResponseDto.setToken(jwtTokenUtil.generateToken(user.getPassword()));
+        signInResponseDto.setToken(jwtTokenUtil.generateToken(user));
         signInResponseDto.setType(String.valueOf(user.getRoleType()));
 
         return signInResponseDto;

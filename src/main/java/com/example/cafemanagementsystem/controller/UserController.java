@@ -51,7 +51,7 @@ public class UserController {
     public ResponseEntity<SignInResponseDto> signIn(@RequestBody SignInRequestDto signInRequestDto) {
         SignInResponseDto signInResponseDto = null;
         try {
-            signInResponseDto = userService.signIn(signInRequestDto.getEmail(), signInRequestDto.getPassword());
+            signInResponseDto = userService.signIn(signInRequestDto.getUsername(), signInRequestDto.getPassword());
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
             throw new ApiRequestException(message);

@@ -1,6 +1,7 @@
 package com.example.cafemanagementsystem.dto.request;
 
-import com.example.cafemanagementsystem.domain.enums.UserRole;
+import com.example.cafemanagementsystem.domain.enums.RoleType;
+
 
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ public class UserRequestDto {
     private  String email;
     private String password;
 
-    private UserRole userRoleType;
+    private RoleType userRoleType;
     private Boolean active;
 
     public UserRequestDto() {
@@ -21,7 +22,7 @@ public class UserRequestDto {
 
     public UserRequestDto(String firstName, String lastName,
                           String userName, String email, String password,
-                          UserRole userRoleType, Boolean active) {
+                          RoleType userRoleType, Boolean active) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -71,11 +72,11 @@ public class UserRequestDto {
         this.active = active;
     }
 
-    public UserRole getUserRoleType() {
+    public RoleType getUserRoleType() {
         return userRoleType;
     }
 
-    public void setUserRoleType(UserRole userRoleType) {
+    public void setUserRoleType(RoleType userRoleType) {
         this.userRoleType = userRoleType;
     }
 
@@ -87,32 +88,5 @@ public class UserRequestDto {
         this.email = email;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserRequestDto that = (UserRequestDto) o;
-        return Objects.equals(firstName, that.firstName)
-                && Objects.equals(lastName, that.lastName)
-                && Objects.equals(userName, that.userName)
-                && Objects.equals(active, that.active);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, userName, active);
-    }
-
-    @Override
-    public String toString() {
-        return "UserRequestDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", userRoleType=" + userRoleType +
-                ", active=" + active +
-                '}';
-    }
 }

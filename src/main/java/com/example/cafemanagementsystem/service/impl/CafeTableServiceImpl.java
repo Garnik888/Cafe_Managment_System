@@ -129,7 +129,7 @@ import java.util.Set;
 
             CafeTable cafeTable = modelMapper.map(getCafeTable, CafeTable.class);
 
-            Optional<User> getUser = userRepository.findByEmail(userRequestDto.getEmail());
+            Optional<User> getUser = userRepository.findByUsername(userRequestDto.getUserName());
 
             if(getUser.isEmpty()) {
 
