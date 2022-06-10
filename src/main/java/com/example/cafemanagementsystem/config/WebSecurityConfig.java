@@ -1,6 +1,7 @@
 package com.example.cafemanagementsystem.config;
 
-import com.example.cafemanagementsystem.domain.enums.UserRole;
+
+import com.example.cafemanagementsystem.domain.enums.RoleType;
 import com.example.cafemanagementsystem.security.JwtAuthenticationEntryPoint;
 import com.example.cafemanagementsystem.security.JwtAuthenticationTokenFilter;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and().authorizeRequests()
-                .antMatchers("/api/v1/auth/signUp" ).permitAll();
+                .antMatchers("/api/v1/auth/signIn" ).permitAll()
+                .antMatchers("/api/v1/auth/signUp" ).hasAnyAuthority("ADMIN");
+
+              //  .antMatchers("/api/v1/auth/signUp" ).hasRole("ADMIN");
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
     }

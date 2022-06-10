@@ -1,7 +1,8 @@
 package com.example.cafemanagementsystem.dto.request;
 
-import com.example.cafemanagementsystem.domain.enums.UserRole;
-import lombok.Data;
+
+
+import com.example.cafemanagementsystem.domain.enums.RoleType;
 
 import java.util.Objects;
 
@@ -15,22 +16,19 @@ public class SignUpRequestDto {
 
     private String password;
 
-    private  String email;
 
-    private UserRole userRoleType;
+    private RoleType userRoleType;
 
 
     public SignUpRequestDto(String firstName,
                             String lastName,
                             String username,
                             String password,
-                            String email,
-                            UserRole userRoleType) {
+                            RoleType userRoleType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.email = email;
         this.userRoleType = userRoleType;
     }
 
@@ -66,19 +64,11 @@ public class SignUpRequestDto {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public UserRole getUserRoleType() {
+    public RoleType getUserRoleType() {
         return userRoleType;
     }
 
-    public void setUserRoleType(UserRole userRoleType) {
+    public void setUserRoleType(RoleType userRoleType) {
         this.userRoleType = userRoleType;
     }
 
@@ -87,23 +77,11 @@ public class SignUpRequestDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SignUpRequestDto that = (SignUpRequestDto) o;
-        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(email, that.email) && userRoleType == that.userRoleType;
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && userRoleType == that.userRoleType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, username, password, email, userRoleType);
-    }
-
-    @Override
-    public String toString() {
-        return "SignUpRequestDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", userRoleType=" + userRoleType +
-                '}';
+        return Objects.hash(firstName, lastName, username, password, userRoleType);
     }
 }

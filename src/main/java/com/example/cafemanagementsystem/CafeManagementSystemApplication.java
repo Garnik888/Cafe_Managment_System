@@ -1,7 +1,8 @@
 package com.example.cafemanagementsystem;
 
+
 import com.example.cafemanagementsystem.domain.entity.User;
-import com.example.cafemanagementsystem.domain.enums.UserRole;
+import com.example.cafemanagementsystem.domain.enums.RoleType;
 import com.example.cafemanagementsystem.repository.UserRepo;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
@@ -12,7 +13,8 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @SpringBootApplication()
@@ -33,18 +35,18 @@ public class CafeManagementSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(CafeManagementSystemApplication.class, args);
     }
-//    @Bean
-//    public CommandLineRunner runner(UserRepository userRepository, BCryptPasswordEncoder encoder) {
-//        return args -> {
-//            User manager = new User();
-//            manager.setFirstName("Vardan");
-//            manager.setLastName("Vardanyan");
-//            manager.setUsername("manager");
-//            manager.setPassword(encoder.encode("password"));
-//            manager.setManager(true);
-//
-//            userRepository.save(manager);
-//        };
-//    }
+   // @Bean
+    public CommandLineRunner runner(UserRepo userRepository, BCryptPasswordEncoder encoder) {
+        return args -> {
+            User admin = new User();
+            admin.setFirstName("Vardan");
+            admin.setLastName("Vardanyan");
+            admin.setUsername("admin");
+            admin.setPassword(encoder.encode("password"));
+            admin.setRoleType(RoleType.ADMIN);
+
+            userRepository.save(admin);
+        };
+    }
 
 }
