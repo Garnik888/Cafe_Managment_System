@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CafeTableRepo extends JpaRepository<CafeTable,Long> {
+public interface CafeTableRepository extends JpaRepository<CafeTable,Long> {
 
     List<CafeTableResponseDto> findCafeTableByUser(User user);
 
