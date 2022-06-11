@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/order")
 public class OrderController {
 
     private final OrderService orderService;
@@ -68,6 +68,7 @@ public class OrderController {
             String message = e.getName();
             throw new ApiRequestException(message);}}
 
+    @Operation(summary = "Get Order",  security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDto> findById(@PathVariable("id") Long tableId) {
         try {

@@ -2,23 +2,22 @@ package com.example.cafemanagementsystem.controller;
 
 import com.example.cafemanagementsystem.dto.request.SignInRequestDto;
 import com.example.cafemanagementsystem.dto.request.SignUpRequestDto;
+import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignInResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignUpResponseDto;
+import com.example.cafemanagementsystem.dto.responce.UserResponseDto;
 import com.example.cafemanagementsystem.exception.ApiRequestException;
 import com.example.cafemanagementsystem.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/auth")
 public class UserController {
 
 
@@ -29,7 +28,7 @@ public class UserController {
     }
 
 
-    @Operation(summary = "Add a new user", description = "", tags = {"user"}, security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Add a new user",  security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/signUp")
     public ResponseEntity<SignUpResponseDto> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
 
@@ -60,6 +59,26 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         return ResponseEntity.ok(signInResponseDto);
+    }
+
+    @Operation(summary = "Delete user",  security = @SecurityRequirement(name = "bearerAuth"))
+    @DeleteMapping("/username}")
+    public ResponseEntity<UserResponseDto> updateAndDelete(@PathVariable("username") String username) {
+        try {
+            return ResponseEntity.ok(userService.deleteUser(username));
+        } catch (UserPrincipalNotFoundException e) {
+            String message = e.getName();
+            throw new ApiRequestException(message);}}
+
+    @Operation(summary = "Get user",  security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> findById(@PathVariable("id") Long userId) {
+        try {
+            return ResponseEntity.ok(userService.findById(userId));
+        } catch (UserPrincipalNotFoundException e) {
+            String message = e.getName();
+            throw new ApiRequestException(message);
+        }
     }
 }
 
