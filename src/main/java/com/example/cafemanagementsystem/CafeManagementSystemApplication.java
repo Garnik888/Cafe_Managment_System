@@ -19,9 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication()
 @OpenAPIDefinition(
         info = @Info(
-                title = "Cafe Manager",
-                version = "v1",
-                description = "API for Cafe",
+                title = "Cafe Management System",
+                version = "1",
+                description = "Cafe API",
                 contact = @Contact(name = "bootcamp", email = "aca.bootcamp@gmail.com")))
 @SecurityScheme(
         name = "bearerAuth",
@@ -38,8 +38,8 @@ public class CafeManagementSystemApplication {
     public CommandLineRunner runner(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         return args -> {
             User admin = new User();
-            admin.setFirstName("Vardan");
-            admin.setLastName("Vardanyan");
+            admin.setFirstName("Admin");
+            admin.setLastName("Admin");
             admin.setUsername("admin");
             admin.setPassword(encoder.encode("password"));
             admin.setRoleType(RoleType.ADMIN);
