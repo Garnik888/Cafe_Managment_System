@@ -18,6 +18,9 @@ public class AssortmentOrder {
 
 
 
+    @Column(name = "status",nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AssortmentStatus assortmentStatus;
     @Column(name = "count",nullable = false)
     private Integer count;
 
@@ -33,17 +36,14 @@ public class AssortmentOrder {
     public AssortmentOrder() {
     }
 
-    public AssortmentOrder(Long id, Integer count, Order order, Assortment assortment) {
+    public AssortmentOrder(Long id, AssortmentStatus assortmentStatus,
+                           Integer count, Order order,
+                           Assortment assortment) {
         this.id = id;
+        this.assortmentStatus = assortmentStatus;
         this.count = count;
         this.order = order;
         this.assortment = assortment;
-    }
-
-    public AssortmentOrder(Long id, Integer count, Order order) {
-        this.id = id;
-        this.count = count;
-        this.order = order;
     }
 
     public Long getId() {
@@ -79,6 +79,14 @@ public class AssortmentOrder {
         this.assortment = assortment;
     }
 
+    public AssortmentStatus getAssortmentStatus() {
+        return assortmentStatus;
+    }
+
+    public void setAssortmentStatus(AssortmentStatus assortmentStatus) {
+        this.assortmentStatus = assortmentStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,9 +104,8 @@ public class AssortmentOrder {
     public String toString() {
         return "AssortmentOrder{" +
                 "id=" + id +
+                ", assortmentStatus=" + assortmentStatus +
                 ", count=" + count +
-                ", order=" + order +
-                ", assortment=" + assortment +
                 '}';
     }
 }

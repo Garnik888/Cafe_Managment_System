@@ -25,9 +25,6 @@ public class Assortment {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "status",nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AssortmentStatus assortmentStatus;
 
     public Assortment() {
     }
@@ -35,13 +32,11 @@ public class Assortment {
     public Assortment(Long id,
                       String name,
                       AssortmentType assortmentType,
-                      Double price,
-                      AssortmentStatus assortmentStatus) {
+                      Double price) {
         this.id = id;
         this.name = name;
         this.assortmentType = assortmentType;
         this.price = price;
-        this.assortmentStatus = assortmentStatus;
     }
 
     public Long getId() {
@@ -76,36 +71,18 @@ public class Assortment {
         this.assortmentType = assortmentType;
     }
 
-    public AssortmentStatus getAssortmentStatus() {
-        return assortmentStatus;
-    }
-
-    public void setAssortmentStatus(AssortmentStatus assortmentStatus) {
-        this.assortmentStatus = assortmentStatus;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Assortment that = (Assortment) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && assortmentType == that.assortmentType && Objects.equals(price, that.price) && assortmentStatus == that.assortmentStatus;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && assortmentType == that.assortmentType && Objects.equals(price, that.price) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, assortmentType, price, assortmentStatus);
+        return Objects.hash(id, name, assortmentType, price);
     }
 
-
-    @Override
-    public String toString() {
-        return "Assortment{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", assortmentType=" + assortmentType +
-                ", price=" + price +
-                ", assortmentStatus=" + assortmentStatus +
-                '}';
-    }
 }

@@ -60,11 +60,5 @@ public class AssortmentRequestDto {
         return Objects.hash(name, assortmentType, price);
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                " name='" + name + '\'' +
-                ", price=" + price +
-                '}';
-    }
+
 }
