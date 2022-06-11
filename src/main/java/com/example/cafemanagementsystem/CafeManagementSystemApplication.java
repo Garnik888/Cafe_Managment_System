@@ -3,9 +3,8 @@ package com.example.cafemanagementsystem;
 
 import com.example.cafemanagementsystem.domain.entity.User;
 import com.example.cafemanagementsystem.domain.enums.RoleType;
-import com.example.cafemanagementsystem.repository.UserRepo;
+import com.example.cafemanagementsystem.repository.UserRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -36,7 +35,7 @@ public class CafeManagementSystemApplication {
         SpringApplication.run(CafeManagementSystemApplication.class, args);
     }
    // @Bean
-    public CommandLineRunner runner(UserRepo userRepository, BCryptPasswordEncoder encoder) {
+    public CommandLineRunner runner(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         return args -> {
             User admin = new User();
             admin.setFirstName("Vardan");
