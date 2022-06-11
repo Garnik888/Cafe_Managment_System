@@ -1,10 +1,14 @@
 package com.example.cafemanagementsystem.service.impl;
 
+import com.example.cafemanagementsystem.domain.entity.CafeTable;
+import com.example.cafemanagementsystem.domain.entity.Order;
 import com.example.cafemanagementsystem.domain.entity.User;
 import com.example.cafemanagementsystem.dto.request.SignUpRequestDto;
+import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignInResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignUpResponseDto;
-import com.example.cafemanagementsystem.repository.UserRepo;
+import com.example.cafemanagementsystem.dto.responce.UserResponseDto;
+import com.example.cafemanagementsystem.repository.UserRepository;
 import com.example.cafemanagementsystem.service.UserService;
 import com.example.cafemanagementsystem.util.JwtTokenUtil;
 import org.modelmapper.ModelMapper;
@@ -21,24 +25,25 @@ import java.nio.file.attribute.UserPrincipalNotFoundException;
 public class UserServiceImpl implements UserService {
 
 
-    private final UserRepo userRepository;
+    private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepository, JwtTokenUtil jwtTokenUtil, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, JwtTokenUtil jwtTokenUtil, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtTokenUtil = jwtTokenUtil;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     @Transactional
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) throws UserPrincipalNotFoundException {
         userRepository.findByUsername(signUpRequestDto.getUsername()).ifPresent(user -> {
             try {
-                throw new UserPrincipalNotFoundException( "User with username = " + signUpRequestDto.getFirstName() + "already exist");
+                throw new UserPrincipalNotFoundException("User with username = " + signUpRequestDto.getFirstName() + "already exist");
             } catch (UserPrincipalNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -47,7 +52,7 @@ public class UserServiceImpl implements UserService {
         User user = modelMapper.map(signUpRequestDto, User.class);
         user.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
         user.setActive(false);
-      return   modelMapper.map(userRepository.save(user), SignUpResponseDto.class);
+        return modelMapper.map(userRepository.save(user), SignUpResponseDto.class);
 
     }
 
@@ -55,7 +60,7 @@ public class UserServiceImpl implements UserService {
     public SignInResponseDto signIn(String username, String password) throws UserPrincipalNotFoundException {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() ->new UserPrincipalNotFoundException(
+                .orElseThrow(() -> new UserPrincipalNotFoundException(
                         "No such user with username = " + username));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
@@ -70,5 +75,22 @@ public class UserServiceImpl implements UserService {
         signInResponseDto.setType(String.valueOf(user.getRoleType()));
 
         return signInResponseDto;
+    }
+
+    @Override
+    public UserResponseDto deleteUser(String username) throws UserPrincipalNotFoundException {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UserPrincipalNotFoundException(String.format("Order with username %s is not found", username)));
+        userRepository.delete(user);
+
+        return modelMapper.map(user, UserResponseDto.class);
+    }
+
+    @Override
+    public UserResponseDto findById(Long userId) throws UserPrincipalNotFoundException {
+        User user=userRepository.findById(userId).orElseThrow(() ->
+                new UserPrincipalNotFoundException(String.format("User with id %s is not found", userId)));
+      UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
+        return userResponseDto;
     }
 }

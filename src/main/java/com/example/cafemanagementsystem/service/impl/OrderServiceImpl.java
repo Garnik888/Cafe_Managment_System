@@ -1,14 +1,13 @@
 package com.example.cafemanagementsystem.service.impl;
 
-import com.example.cafemanagementsystem.domain.entity.AssortmentOrder;
 import com.example.cafemanagementsystem.domain.entity.CafeTable;
 import com.example.cafemanagementsystem.domain.entity.Order;
 import com.example.cafemanagementsystem.domain.enums.OrderStatus;
 import com.example.cafemanagementsystem.dto.request.OrderRequestDto;
 import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
-import com.example.cafemanagementsystem.repository.AssortmentOrderRepo;
-import com.example.cafemanagementsystem.repository.CafeTableRepo;
-import com.example.cafemanagementsystem.repository.OrderRepo;
+import com.example.cafemanagementsystem.repository.AssortmentOrderRepository;
+import com.example.cafemanagementsystem.repository.CafeTableRepository;
+import com.example.cafemanagementsystem.repository.OrderRepository;
 import com.example.cafemanagementsystem.service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +20,23 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepo orderRepository;
+    private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
-    private final CafeTableRepo cafeTableRepo;
-    private final AssortmentOrderRepo assortmentOrderRepo;
+    private final CafeTableRepository cafeTableRepository;
+    private final AssortmentOrderRepository assortmentOrderRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepo orderRepository, ModelMapper modelMapper, CafeTableRepo cafeTableRepo, AssortmentOrderRepo assortmentOrderRepo) {
+    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, CafeTableRepository cafeTableRepository, AssortmentOrderRepository assortmentOrderRepository) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
-        this.cafeTableRepo = cafeTableRepo;
-        this.assortmentOrderRepo = assortmentOrderRepo;
+        this.cafeTableRepository = cafeTableRepository;
+        this.assortmentOrderRepository = assortmentOrderRepository;
     }
 
 
     @Override
     public OrderResponseDto createOrder(Long tableId, OrderRequestDto orderRequestDto) throws UserPrincipalNotFoundException {
-        Optional<CafeTable> cafeTable = Optional.ofNullable(cafeTableRepo.findById(tableId).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("Table with id %s is not found", tableId))));
+        Optional<CafeTable> cafeTable = Optional.ofNullable(cafeTableRepository.findById(tableId).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("Table with id %s is not found", tableId))));
         Order order = new Order();
         order.setOrderStatus(OrderStatus.OPEN);
         order.setDateTime(LocalDateTime.now());
@@ -60,9 +59,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto updateAndDelete(Long id) throws UserPrincipalNotFoundException {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("Order with id %s is not found", id)));
-           assortmentOrderRepo.deleteAssortmentOrdersByOrder(order);
+        Order order = orderRepository.findById(id).orElseThrow(() ->
+                new UserPrincipalNotFoundException(String.format("Order with id %s is not found", id)));
+        assortmentOrderRepository.deleteAllByOrder(order.getId());
 
+        order.setOrderStatus(OrderStatus.CANCELED);
         Order save = orderRepository.save(order);
         return modelMapper.map(save, OrderResponseDto.class);
     }
@@ -71,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDto findById(Long tableId) throws UserPrincipalNotFoundException {
 
-        CafeTable cafeTable = cafeTableRepo.findById(tableId).orElseThrow(() ->
+        CafeTable cafeTable = cafeTableRepository.findById(tableId).orElseThrow(() ->
                 new UserPrincipalNotFoundException(String.format("Table with id %s is not found", tableId)));
         Order order = orderRepository.findOrderByCafeTable(cafeTable);
         OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);

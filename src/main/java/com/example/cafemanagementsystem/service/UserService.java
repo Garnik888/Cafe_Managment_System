@@ -5,6 +5,7 @@ import com.example.cafemanagementsystem.dto.request.SignUpRequestDto;
 import com.example.cafemanagementsystem.dto.request.UserRequestDto;
 import com.example.cafemanagementsystem.dto.responce.SignInResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignUpResponseDto;
+import com.example.cafemanagementsystem.dto.responce.UserResponseDto;
 
 import javax.transaction.Transactional;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
@@ -19,4 +20,8 @@ public interface UserService {
     SignInResponseDto signIn(String username, String password) throws UserPrincipalNotFoundException;
 
 
+
+    UserResponseDto deleteUser(String username) throws UserPrincipalNotFoundException;
+
+    UserResponseDto findById(Long userId) throws UserPrincipalNotFoundException;
 }
