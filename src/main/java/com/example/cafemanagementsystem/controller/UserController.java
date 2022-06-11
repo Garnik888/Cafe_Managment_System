@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @Operation(summary = "Delete user",  security = @SecurityRequirement(name = "bearerAuth"))
-    @DeleteMapping("/username}")
+    @DeleteMapping("/{username}")
     public ResponseEntity<UserResponseDto> updateAndDelete(@PathVariable("username") String username) {
         try {
             return ResponseEntity.ok(userService.deleteUser(username));

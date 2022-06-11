@@ -1,11 +1,9 @@
 package com.example.cafemanagementsystem.dto.responce;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+
 
 import java.util.Objects;
 
-@Accessors(chain = true)
 public class SignUpResponseDto {
 
     private String firstName;

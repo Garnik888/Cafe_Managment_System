@@ -34,18 +34,18 @@ public class CafeManagementSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(CafeManagementSystemApplication.class, args);
     }
-   // @Bean
-    public CommandLineRunner runner(UserRepository userRepository, BCryptPasswordEncoder encoder) {
-        return args -> {
-            User admin = new User();
-            admin.setFirstName("Admin");
-            admin.setLastName("Admin");
-            admin.setUsername("admin");
-            admin.setPassword(encoder.encode("password"));
-            admin.setRoleType(RoleType.ADMIN);
-
-            userRepository.save(admin);
-        };
-    }
+//   // @Bean
+//    public CommandLineRunner runner(UserRepository userRepository, BCryptPasswordEncoder encoder) {
+//        return args -> {
+//            User admin = new User();
+//            admin.setFirstName("Admin");
+//            admin.setLastName("Admin");
+//            admin.setUsername("admin");
+//            admin.setPassword(encoder.encode("password"));
+//            admin.setRoleType(RoleType.ADMIN);
+//
+//            userRepository.save(admin);
+//        };
+//    }
 
 }

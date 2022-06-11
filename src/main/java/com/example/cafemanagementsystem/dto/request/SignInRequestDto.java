@@ -1,8 +1,5 @@
 package com.example.cafemanagementsystem.dto.request;
 
-import lombok.Data;
-
-import javax.validation.constraints.Email;
 import java.util.Objects;
 
 
