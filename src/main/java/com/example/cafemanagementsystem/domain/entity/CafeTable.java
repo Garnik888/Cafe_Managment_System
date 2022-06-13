@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "cafe_table")
@@ -33,7 +32,7 @@ public class CafeTable {
     private List<Order> orders;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

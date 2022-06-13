@@ -11,7 +11,6 @@ public class UserRequestDto {
     private String lastName;
     private String userName;
 
-    private  String email;
     private String password;
 
     private RoleType userRoleType;
@@ -21,12 +20,11 @@ public class UserRequestDto {
     }
 
     public UserRequestDto(String firstName, String lastName,
-                          String userName, String email, String password,
+                          String userName, String password,
                           RoleType userRoleType, Boolean active) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
-        this.email = email;
         this.password = password;
         this.userRoleType = userRoleType;
         this.active = active;
@@ -80,13 +78,16 @@ public class UserRequestDto {
         this.userRoleType = userRoleType;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRequestDto that = (UserRequestDto) o;
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(userName, that.userName) && Objects.equals(password, that.password) && userRoleType == that.userRoleType && Objects.equals(active, that.active);
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, userName, password, userRoleType, active);
     }
-
-
 }

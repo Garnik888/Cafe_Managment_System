@@ -1,5 +1,6 @@
 package com.example.cafemanagementsystem.security;
 
+
 import com.example.cafemanagementsystem.domain.entity.User;
 import com.example.cafemanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

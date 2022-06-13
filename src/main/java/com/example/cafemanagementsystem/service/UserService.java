@@ -24,4 +24,8 @@ public interface UserService {
     UserResponseDto deleteUser(String username) throws UserPrincipalNotFoundException;
 
     UserResponseDto findById(Long userId) throws UserPrincipalNotFoundException;
+
+    Object findByRoleTypeWaiter() throws UserPrincipalNotFoundException;
+
+    Object findAll() throws UserPrincipalNotFoundException;
 }

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class CafeTableController {
 
     @Operation(summary = "Save cafe table",  security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> saveCafeTable(@PathVariable("id") Long userId,
                                            @RequestBody CafeTableRequestDto cafeTableRequestDto) throws Exception {
 
@@ -40,11 +42,12 @@ public class CafeTableController {
             return ResponseEntity.ok(cafeTableResponseDto);
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Cafe table is not save");
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Cafe table  not save");
     }
 
     @Operation(summary = "Delete cafe table",  security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> deleteCafeTable(@PathVariable("id") Long id) throws Exception {
 
         CafeTableResponseDto cafeTableResponseDto = cafeTableService.deleteById(id);
@@ -59,6 +62,7 @@ public class CafeTableController {
 
     @Operation(summary = "Get all free table",  security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/freeTable")
+    @PreAuthorize("hasAnyAuthority('MANAGER','WAITER')")
     public ResponseEntity<?> getAllFreeTables() {
 
         List<CafeTableResponseDto> cafeTableResponseDtos = cafeTableService.getAllFreeTables();
@@ -68,11 +72,12 @@ public class CafeTableController {
             return ResponseEntity.ok(cafeTableResponseDtos);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not find eny free table");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not find any free table");
     }
 
     @Operation(summary = "Get table by waiter id",  security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> getTableByWaiterId(@PathVariable("id") Long id) throws Exception {
 
         List<CafeTableResponseDto> cafeTableResponseDtos = cafeTableService.getTableByWaiterId(id);
@@ -82,25 +87,27 @@ public class CafeTableController {
             return ResponseEntity.ok(cafeTableResponseDtos);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not find eny free table");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found any table");
     }
 
     @Operation(summary = "Update name",  security = @SecurityRequirement(name = "bearerAuth"))
-    @PutMapping
-    public ResponseEntity<?> updateName(@RequestBody String name, @RequestBody String newName) throws Exception {
+    @PutMapping("/{tableName}")
+    @PreAuthorize("hasAuthority('MANAGER')")
+    public ResponseEntity<?> updateName(@PathVariable("tableName") String name,@RequestBody String newName) throws Exception {
 
-        CafeTableResponseDto cafeTableResponseDto = cafeTableService.updateName(name, newName);
+        CafeTableResponseDto cafeTableResponseDto = cafeTableService.updateName(name,newName);
 
         if(cafeTableResponseDto != null) {
 
             return ResponseEntity.ok(cafeTableResponseDto);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not find eny free table");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found any free table");
     }
 
     @Operation(summary = "Update waiter",  security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> upDateWaiter(@PathVariable("id") Long id,
                                           @RequestBody UserRequestDto userRequestDto) throws Exception {
 
@@ -111,6 +118,6 @@ public class CafeTableController {
             return ResponseEntity.ok(cafeTableResponseDto);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not find eny free table");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found any free table");
     }
 }

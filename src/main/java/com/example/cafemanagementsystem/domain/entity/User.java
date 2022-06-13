@@ -38,10 +38,7 @@ public class User {
 
 
     @JsonManagedReference
-    @OneToMany(
-            mappedBy = "user",
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<CafeTable> tables;
 
 

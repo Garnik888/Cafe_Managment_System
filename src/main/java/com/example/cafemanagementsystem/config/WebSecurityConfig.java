@@ -36,8 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and().authorizeRequests()
-                .antMatchers("/api/auth/signIn" ).permitAll()
-                .antMatchers("/api/auth/signUp" ).hasAnyAuthority("ADMIN");
+                .antMatchers("/api/auth/signIn" ).permitAll();
+             //   .antMatchers("/api/auth/signUp" ).hasAnyAuthority("ADMIN");
 
               //  .antMatchers("/api/v1/auth/signUp" ).hasRole("ADMIN");
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);

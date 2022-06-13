@@ -2,15 +2,9 @@ package com.example.cafemanagementsystem.controller;
 
 import com.example.cafemanagementsystem.dto.request.AssortmentRequestDto;
 import com.example.cafemanagementsystem.dto.responce.AssortmentResponseDto;
-import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 import com.example.cafemanagementsystem.exception.ApiRequestException;
-import com.example.cafemanagementsystem.service.AssortmentService;
 import com.example.cafemanagementsystem.service.impl.AssortmentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +44,7 @@ public class AssortmentController {
 
     @Operation(summary = "Delete assortment", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> deleteAssortment(@PathVariable(name = "id") Long id) throws Exception {
 
         AssortmentResponseDto assortmentResponseDto = assortmentService.deleteById(id);
@@ -64,6 +59,7 @@ public class AssortmentController {
 
     @Operation(summary = "Update assortment price", security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/{name}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> updateByPrice(@PathVariable("name") String name,
                                            @RequestBody Double price) throws Exception {
 
@@ -79,6 +75,7 @@ public class AssortmentController {
 
     @Operation(summary = "Get all assortment food", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/food")
+    @PreAuthorize("hasAnyAuthority('MANAGER','WAITER')")
     public ResponseEntity<?> getAllFood() {
 
         List<AssortmentResponseDto> assortmentResponseDtos = assortmentService.getAllFood();
@@ -93,6 +90,7 @@ public class AssortmentController {
 
     @Operation(summary = "Get all assortment drink", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/drink")
+    @PreAuthorize("hasAnyAuthority('MANAGER','WAITER')")
     public ResponseEntity<?> getAllDrink() {
 
         List<AssortmentResponseDto> assortmentResponseDtos = assortmentService.getAllDrink();

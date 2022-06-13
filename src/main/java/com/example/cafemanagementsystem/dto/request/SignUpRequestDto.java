@@ -19,6 +19,8 @@ public class SignUpRequestDto {
 
     private RoleType userRoleType;
 
+    public SignUpRequestDto() {
+    }
 
     public SignUpRequestDto(String firstName,
                             String lastName,

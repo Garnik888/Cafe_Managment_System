@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class AssortmentOrderController {
 
     @Operation(summary = "Save assortment order", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('WAITER')")
     public ResponseEntity<?> saveAssortmentOrder(@PathVariable("id") Long orderId,
                                                  @RequestBody Long assortmentId, Integer count) {
 
@@ -39,7 +41,8 @@ public class AssortmentOrderController {
 
     @Operation(summary = "Update order status change and delete",
             security = @SecurityRequirement(name = "bearerAuth"))
-    @DeleteMapping("/{id}")
+    @DeleteMapping("cancelled/{id}")
+    @PreAuthorize("hasAuthority('WAITER')")
 
     public ResponseEntity<?> updateStatusAndDelete(@PathVariable("id") Long id) {
 
@@ -57,7 +60,8 @@ public class AssortmentOrderController {
 
     @Operation(summary = "Update assortment order count",
             security = @SecurityRequirement(name = "bearerAuth"))
-    @PutMapping("/{id}")
+    @PutMapping("count/{id}")
+    @PreAuthorize("hasAuthority('WAITER')")
     public ResponseEntity<?> updateCount(@PathVariable("id") Long id,
                                          @RequestBody Integer count) {
         AssortmentOrderResponseDto assortmentOrderResponseDto =
@@ -75,6 +79,7 @@ public class AssortmentOrderController {
     @Operation(summary = "Get all assortment order by order",
             security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('MANAGER','WAITER')")
     public ResponseEntity<?> getByOrder(@PathVariable("id") Long orderId) {
 
         List<AssortmentOrderResponseDto> assortmentOrderResponseDtoList =

@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testDb
+    username: cafe
+    password: cafe
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+
+jwt:
+  expiration: 200000
+  secret:23nif//bsdb45//3SGLWgf5614/8//gf561456gf4/999sqqwetrydgavavb//gf5gf5gf45gfd5fg44sfggfgfgfEMP

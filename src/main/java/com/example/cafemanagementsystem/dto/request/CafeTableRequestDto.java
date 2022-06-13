@@ -1,22 +1,18 @@
 package com.example.cafemanagementsystem.dto.request;
 
-import com.example.cafemanagementsystem.domain.entity.User;
-
 import java.util.Objects;
 
 public class CafeTableRequestDto {
 
     private String tableName;
     private Boolean reserve;
-    private UserRequestDto user;
 
     public CafeTableRequestDto() {
     }
 
-    public CafeTableRequestDto(String tableName, Boolean reserve, UserRequestDto user) {
+    public CafeTableRequestDto(String tableName, Boolean reserve) {
         this.tableName = tableName;
         this.reserve = reserve;
-        this.user = user;
     }
 
     public String getTableName() {
@@ -35,13 +31,6 @@ public class CafeTableRequestDto {
         this.reserve = reserve;
     }
 
-    public UserRequestDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserRequestDto user) {
-        this.user = user;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -2,7 +2,6 @@ package com.example.cafemanagementsystem.controller;
 
 import com.example.cafemanagementsystem.dto.request.SignInRequestDto;
 import com.example.cafemanagementsystem.dto.request.SignUpRequestDto;
-import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignInResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignUpResponseDto;
 import com.example.cafemanagementsystem.dto.responce.UserResponseDto;
@@ -12,9 +11,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,6 +31,7 @@ public class UserController {
 
     @Operation(summary = "Add a new user",  security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/signUp")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<SignUpResponseDto> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
 
         SignUpResponseDto signUpResponseDto = null;
@@ -61,8 +63,11 @@ public class UserController {
         return ResponseEntity.ok(signInResponseDto);
     }
 
+
+
     @Operation(summary = "Delete user",  security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{username}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserResponseDto> updateAndDelete(@PathVariable("username") String username) {
         try {
             return ResponseEntity.ok(userService.deleteUser(username));
@@ -72,9 +77,35 @@ public class UserController {
 
     @Operation(summary = "Get user",  security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserResponseDto> findById(@PathVariable("id") Long userId) {
         try {
             return ResponseEntity.ok(userService.findById(userId));
+        } catch (UserPrincipalNotFoundException e) {
+            String message = e.getName();
+            throw new ApiRequestException(message);
+        }
+    }
+
+    @Operation(summary = "Get user",  security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/waiter")
+    @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
+    public ResponseEntity<List<UserResponseDto>> findByRoleTypeWaiter() {
+        try {
+            return ResponseEntity.ok(userService.findByRoleTypeWaiter());
+        } catch (UserPrincipalNotFoundException e) {
+            String message = e.getName();
+            throw new ApiRequestException(message);
+        }
+    }
+
+
+    @Operation(summary = "Get user",  security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<UserResponseDto>> findByRoleTypeALL() {
+        try {
+            return ResponseEntity.ok(userService.findAll());
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
             throw new ApiRequestException(message);

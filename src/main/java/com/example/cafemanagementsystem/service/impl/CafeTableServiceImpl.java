@@ -2,6 +2,7 @@ package com.example.cafemanagementsystem.service.impl;
 
 import com.example.cafemanagementsystem.domain.entity.CafeTable;
 import com.example.cafemanagementsystem.domain.entity.User;
+import com.example.cafemanagementsystem.domain.enums.RoleType;
 import com.example.cafemanagementsystem.dto.request.CafeTableRequestDto;
 import com.example.cafemanagementsystem.dto.request.UserRequestDto;
 import com.example.cafemanagementsystem.dto.responce.CafeTableResponseDto;
@@ -11,7 +12,6 @@ import com.example.cafemanagementsystem.service.CafeTableService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +46,18 @@ public class CafeTableServiceImpl implements CafeTableService {
 
         if (getUser.isEmpty()) {
 
-            throw new Exception("Not find user");
+            throw new Exception("Not found user");
         }
 
-        cafeTable.setUser(modelMapper.map(getUser, User.class));
+       User user= modelMapper.map(getUser, User.class);
+
+        if(!user.getRoleType().equals(RoleType.WAITER)) {
+
+            throw new Exception("Invalid role type");
+        }
+
+        cafeTable.setUser(user);
+
 
         return modelMapper.map(cafeTableRepository.save(cafeTable), CafeTableResponseDto.class);
     }
@@ -61,7 +69,7 @@ public class CafeTableServiceImpl implements CafeTableService {
 
         if (cafeTable.isEmpty()) {
 
-            throw new Exception("Cafe table not find");
+            throw new Exception("Cafe table not found");
         }
 
         CafeTableResponseDto cafeTableResponseDto = modelMapper.map(cafeTable, CafeTableResponseDto.class);
@@ -94,7 +102,7 @@ public class CafeTableServiceImpl implements CafeTableService {
 
         if (user == null) {
 
-            throw new Exception("Not fund user");
+            throw new Exception("Not found user");
         }
 
         return cafeTableRepository.findCafeTableByUser(user);
@@ -107,14 +115,14 @@ public class CafeTableServiceImpl implements CafeTableService {
 
         if (getCafeTable.isEmpty()) {
 
-            throw new Exception("Not fund cafe table");
+            throw new Exception("Not found cafe table");
         }
 
         CafeTable cafeTable = modelMapper.map(getCafeTable, CafeTable.class);
 
         cafeTable.setTableName(newName);
-
-        return modelMapper.map(cafeTableRepository.save(cafeTable), CafeTableResponseDto.class);
+        CafeTable save = cafeTableRepository.save(cafeTable);
+        return modelMapper.map(save, CafeTableResponseDto.class);
     }
 
     @Override

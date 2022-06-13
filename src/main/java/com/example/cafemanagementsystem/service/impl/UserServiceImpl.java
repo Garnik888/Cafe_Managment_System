@@ -1,10 +1,8 @@
 package com.example.cafemanagementsystem.service.impl;
 
-import com.example.cafemanagementsystem.domain.entity.CafeTable;
-import com.example.cafemanagementsystem.domain.entity.Order;
 import com.example.cafemanagementsystem.domain.entity.User;
+import com.example.cafemanagementsystem.domain.enums.RoleType;
 import com.example.cafemanagementsystem.dto.request.SignUpRequestDto;
-import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignInResponseDto;
 import com.example.cafemanagementsystem.dto.responce.SignUpResponseDto;
 import com.example.cafemanagementsystem.dto.responce.UserResponseDto;
@@ -20,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -88,9 +88,44 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findById(Long userId) throws UserPrincipalNotFoundException {
-        User user=userRepository.findById(userId).orElseThrow(() ->
+        User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserPrincipalNotFoundException(String.format("User with id %s is not found", userId)));
-      UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
+        UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
         return userResponseDto;
+    }
+
+    @Override
+    public List<UserResponseDto> findByRoleTypeWaiter() throws UserPrincipalNotFoundException {
+        List<UserResponseDto> userResponseDtoList = new ArrayList<>();
+        List<User> users = userRepository.findAllByRoleType(RoleType.WAITER);
+
+        if(users.isEmpty()) {
+            throw new UserPrincipalNotFoundException("Not found waiter's role type users ");
+        }
+
+        for (User user : users) {
+
+            userResponseDtoList.add(modelMapper.map(user, UserResponseDto.class));
+
+        }
+        return userResponseDtoList;
+    }
+
+    @Override
+    public List<UserResponseDto> findAll() throws UserPrincipalNotFoundException {
+
+        List<UserResponseDto> userResponseDtoList = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+
+        if(users.isEmpty()) {
+            throw new UserPrincipalNotFoundException("Not found users");
+        }
+
+        for (User user : users) {
+
+            userResponseDtoList.add(modelMapper.map(user, UserResponseDto.class));
+
+        }
+        return userResponseDtoList;
     }
 }
