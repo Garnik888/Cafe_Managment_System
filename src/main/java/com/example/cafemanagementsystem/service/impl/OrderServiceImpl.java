@@ -3,7 +3,6 @@ package com.example.cafemanagementsystem.service.impl;
 import com.example.cafemanagementsystem.domain.entity.CafeTable;
 import com.example.cafemanagementsystem.domain.entity.Order;
 import com.example.cafemanagementsystem.domain.enums.OrderStatus;
-import com.example.cafemanagementsystem.dto.request.OrderRequestDto;
 import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 import com.example.cafemanagementsystem.repository.AssortmentOrderRepository;
 import com.example.cafemanagementsystem.repository.CafeTableRepository;
@@ -35,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public OrderResponseDto createOrder(Long tableId, OrderRequestDto orderRequestDto) throws UserPrincipalNotFoundException {
+    public OrderResponseDto createOrder(Long tableId) throws UserPrincipalNotFoundException {
         Optional<CafeTable> cafeTable = Optional.ofNullable(cafeTableRepository.findById(tableId).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("Table with id %s is not found", tableId))));
         Order order = new Order();
         order.setOrderStatus(OrderStatus.OPEN);

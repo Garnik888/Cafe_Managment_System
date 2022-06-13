@@ -1,24 +1,24 @@
 package com.example.cafemanagementsystem.dto.responce;
 
-import com.example.cafemanagementsystem.domain.entity.CafeTable;
 import com.example.cafemanagementsystem.domain.enums.OrderStatus;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class OrderResponseDto {
 
+    private Long id;
     private OrderStatus status;
     private LocalDateTime dateTime;
-    private CafeTable cafeTable;
+
 
     public OrderResponseDto() {
     }
 
-    public OrderResponseDto(OrderStatus status, CafeTable cafeTable) {
+    public OrderResponseDto(Long id, OrderStatus status, LocalDateTime dateTime) {
+        this.id = id;
         this.status = status;
-        this.cafeTable = cafeTable;
+        this.dateTime = dateTime;
     }
 
     public OrderStatus getStatus() {
@@ -37,12 +37,12 @@ public class OrderResponseDto {
         this.dateTime = dateTime;
     }
 
-    public CafeTable getCafeTable() {
-        return cafeTable;
+    public Long getId() {
+        return id;
     }
 
-    public void setCafeTable(CafeTable cafeTable) {
-        this.cafeTable = cafeTable;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

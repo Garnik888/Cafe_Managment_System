@@ -25,7 +25,7 @@ public class AssortmentOrderController {
     @PostMapping("/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
     public ResponseEntity<?> saveAssortmentOrder(@PathVariable("id") Long orderId,
-                                                 @RequestBody Long assortmentId, Integer count) {
+                                                 @RequestBody Long assortmentId,  Integer count) {
 
         AssortmentOrderResponseDto assortmentOrderResponseDto =
                 assortmentOrderService.createAssortmentOrder(orderId, assortmentId, count);

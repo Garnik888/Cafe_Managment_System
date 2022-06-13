@@ -47,8 +47,8 @@ public class AssortmentOrderServiceImpl implements AssortmentOrderService {
         assortmentOrder.setOrder(order);
         assortmentOrder.setAssortment(assortment);
         assortmentOrder.setCount(count);
-
-        return modelMapper.map(assortmentOrderRepo.save(assortmentOrder), AssortmentOrderResponseDto.class);
+        AssortmentOrder save = assortmentOrderRepo.save(assortmentOrder);
+        return modelMapper.map(save, AssortmentOrderResponseDto.class);
     }
 
     @Override

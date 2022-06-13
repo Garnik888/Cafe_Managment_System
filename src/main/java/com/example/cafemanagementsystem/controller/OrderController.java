@@ -1,7 +1,6 @@
 package com.example.cafemanagementsystem.controller;
 
 
-import com.example.cafemanagementsystem.dto.request.OrderRequestDto;
 import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 import com.example.cafemanagementsystem.exception.ApiRequestException;
 import com.example.cafemanagementsystem.service.OrderService;
@@ -27,12 +26,11 @@ public class OrderController {
     @Operation(summary = "Create New Order",  security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
-    public ResponseEntity<OrderResponseDto> save(@RequestBody OrderRequestDto orderRequestDto,
-                                                   @PathVariable("id") Long tableId) {
+    public ResponseEntity<OrderResponseDto> save(@PathVariable("id") Long tableId) {
 
         OrderResponseDto  orderResponseDto=null;
         try {
-            orderResponseDto = orderService.createOrder(tableId,orderRequestDto);
+            orderResponseDto = orderService.createOrder(tableId);
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
             throw new ApiRequestException(message);
@@ -64,12 +62,12 @@ public class OrderController {
             String message = e.getName();
             throw new ApiRequestException(message);}}
 
-    @Operation(summary = "Get Order",  security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Get Order for table id",  security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
-    public ResponseEntity<OrderResponseDto> findById(@PathVariable("id") Long tableId) {
+    public ResponseEntity<OrderResponseDto> findById(@PathVariable("id") Long Id) {
         try {
-            return ResponseEntity.ok(orderService.findById(tableId));
+            return ResponseEntity.ok(orderService.findById(Id));
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
             throw new ApiRequestException(message);
