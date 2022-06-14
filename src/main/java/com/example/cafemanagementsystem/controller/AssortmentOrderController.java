@@ -78,7 +78,7 @@ public class AssortmentOrderController {
 
     @Operation(summary = "Get all assortment order by order",
             security = @SecurityRequirement(name = "bearerAuth"))
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     @PreAuthorize("hasAnyAuthority('MANAGER','WAITER')")
     public ResponseEntity<?> getByOrder(@PathVariable("id") Long orderId) {
 

@@ -7,15 +7,15 @@ public class AssortmentOrderResponseDto {
 
     private AssortmentStatus assortmentStatus;
     private Integer count;
-    private Assortment assortment;
+
 
     public AssortmentOrderResponseDto() {
     }
 
-    public AssortmentOrderResponseDto(AssortmentStatus assortmentStatus, Integer count, Assortment assortment) {
+    public AssortmentOrderResponseDto(AssortmentStatus assortmentStatus, Integer count) {
         this.assortmentStatus = assortmentStatus;
         this.count = count;
-        this.assortment = assortment;
+
     }
 
     public AssortmentStatus getAssortmentStatus() {
@@ -34,20 +34,13 @@ public class AssortmentOrderResponseDto {
         this.count = count;
     }
 
-    public Assortment getAssortment() {
-        return assortment;
-    }
-
-    public void setAssortment(Assortment assortment) {
-        this.assortment = assortment;
-    }
 
     @Override
     public String toString() {
         return "AssortmentOrderResponseDto{" +
                 "assortmentStatus=" + assortmentStatus +
                 ", count=" + count +
-                ", assortment=" + assortment +
+                ", assortment=" +
                 '}';
     }
 }

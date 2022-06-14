@@ -5,14 +5,16 @@
 //import com.example.cafemanagementsystem.dto.request.SignUpRequestDto;
 //import com.example.cafemanagementsystem.repository.UserRepository;
 //import com.example.cafemanagementsystem.service.UserService;
+//
+//import org.h2.engine.Role;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
-//import org.modelmapper.ModelMapper;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.dao.EmptyResultDataAccessException;
 //
-//import java.nio.file.attribute.UserPrincipalNotFoundException;
+//
+//import java.time.LocalTime;
 //import java.util.Optional;
 //
 //import static org.junit.jupiter.api.Assertions.*;
@@ -26,51 +28,55 @@
 //    @Autowired
 //    private UserRepository userRepository;
 //
-//    private SignUpRequestDto signUpRequestDto;
-//
 //    private User user;
-//    @Autowired
-//    private ModelMapper modelMapper;
+//
 //
 //    @BeforeEach
 //    void beforeAll() {
-//        signUpRequestDto = new SignUpRequestDto();
-//        signUpRequestDto.setFirstName("firstName");
-//        signUpRequestDto.setLastName("lastName");
-//        signUpRequestDto.setUsername("username");
-//        signUpRequestDto.setPassword("password");
-//        signUpRequestDto.setUserRoleType(RoleType.ADMIN);
-//
-//    }
-//
-//    @Test
-//    void save() throws UserPrincipalNotFoundException {
-//        user = modelMapper.map(signUpRequestDto, User.class);
-//        user.setId(15L);
+//        user = new User();
+//        user.setFirstName("poxos");
+//        user.setLastName("poxos");
+//        user.setUsername("poxoail");
+//        user.setPassword("poxos");
 //        user.setActive(true);
-//        userRepository.save(user);
-//       //assertEquals(1, userRepository.count());
-//        Optional<User> byId = userRepository.findById(user.getId());
-//        assertTrue(byId.isPresent());
-//        assertEquals("firstName", byId.get().getFirstName());
-//        assertEquals("username", byId.get().getUsername());
+//        user.setRoleType(RoleType.WAITER);
+//
 //    }
 //
 //    @Test
-//    void deleteById() throws UserPrincipalNotFoundException {
-//        userRepository.delete(user);
-//        userService.deleteUser(user.getUsername());
-//        Optional<User> byId = userRepository.findById(user.getId());
-//        assertFalse(byId.isPresent());
+//    void update() {
+//     userRepository.save(user);
+//
+//        User byId = user.getUsername(user.getUsername());
+//        assertEquals("dsf", byId.getPlane());
 //    }
 //
-//    @Test
-//    void getById_notFound() {
-//        EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class, () -> {
-//            userService.findById(99L);
-//        });
-//        assertEquals("No class com.example.myitemsrest.entity.User entity with id 9999 exists!", thrown.getMessage());
-//    }
+////    @Test
+////    void save() {
+////
+////        userRepository.save(user);
+////
+////        Optional<User> byUsername = userRepository.findByUsername(user.getUsername());
+////        assertTrue(byUsername.isPresent());
+////        assertEquals("poxos", byUsername.get().getFirstName());
+////        assertEquals("poxoail", byUsername.get().getUsername());
+////    }
+//
+////    @Test
+////    void deleteById() {
+////        userService.save(user);
+////        userService.deleteById(user.getId());
+////        Optional<User> byId = userRepository.findById(user.getId());
+////        assertFalse(byId.isPresent());
+////    }
+////
+////    @Test
+////    void deleteById_notFound() {
+////        EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class, () -> {
+////            userService.deleteById(9999);
+////        });
+////        assertEquals("No class com.example.myitemsrest.entity.User entity with id 9999 exists!", thrown.getMessage());
+////    }
 //
 //
 //}
