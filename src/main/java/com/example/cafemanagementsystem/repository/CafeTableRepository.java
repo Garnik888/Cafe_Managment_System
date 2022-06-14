@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface CafeTableRepository extends JpaRepository<CafeTable,Long> {
 
-    List<CafeTableResponseDto> findCafeTableByUser(User user);
+    List<CafeTable> findCafeTableByUser(User user);
 
     @Query("select c from CafeTable c where c.tableName = ?1")
     Optional<CafeTable> findByTableName(String name);

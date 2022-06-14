@@ -16,8 +16,7 @@ public interface CafeTableService {
     List<CafeTableResponseDto> getAllFreeTables();
 
     List<CafeTableResponseDto> getTableByWaiterId(Long userId) throws Exception;
-
     CafeTableResponseDto updateName(String name, String newName) throws Exception;
 
-    CafeTableResponseDto updateWaiter(Long id, UserRequestDto userRequestDto) throws Exception;
+    CafeTableResponseDto updateWaiter(Long id, Long userId) throws Exception;
 }

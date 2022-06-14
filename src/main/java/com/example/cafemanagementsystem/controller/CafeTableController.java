@@ -106,12 +106,11 @@ public class CafeTableController {
     }
 
     @Operation(summary = "Update waiter",  security = @SecurityRequirement(name = "bearerAuth"))
-    @PutMapping("/{id}")
+    @PutMapping("/waiter/{id}")
     @PreAuthorize("hasAuthority('MANAGER')")
-    public ResponseEntity<?> upDateWaiter(@PathVariable("id") Long id,
-                                          @RequestBody UserRequestDto userRequestDto) throws Exception {
+    public ResponseEntity<?> upDateWaiter(@PathVariable("id") Long id, @RequestBody Long  userId) throws Exception {
 
-        CafeTableResponseDto cafeTableResponseDto = cafeTableService.updateWaiter(id, userRequestDto);
+        CafeTableResponseDto cafeTableResponseDto = cafeTableService.updateWaiter(id,userId);
 
         if(cafeTableResponseDto != null) {
 

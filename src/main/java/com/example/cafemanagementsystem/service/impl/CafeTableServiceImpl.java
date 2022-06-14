@@ -4,7 +4,6 @@ import com.example.cafemanagementsystem.domain.entity.CafeTable;
 import com.example.cafemanagementsystem.domain.entity.User;
 import com.example.cafemanagementsystem.domain.enums.RoleType;
 import com.example.cafemanagementsystem.dto.request.CafeTableRequestDto;
-import com.example.cafemanagementsystem.dto.request.UserRequestDto;
 import com.example.cafemanagementsystem.dto.responce.CafeTableResponseDto;
 import com.example.cafemanagementsystem.repository.CafeTableRepository;
 import com.example.cafemanagementsystem.repository.UserRepository;
@@ -98,14 +97,25 @@ public class CafeTableServiceImpl implements CafeTableService {
     @Override
     public List<CafeTableResponseDto> getTableByWaiterId(Long userId) throws Exception {
 
-        User user = modelMapper.map(userRepository.findById(userId), User.class);
+        List<CafeTableResponseDto> cafeTableResponseDtoList = new ArrayList<>();
 
-        if (user == null) {
+        Optional<User> getUser = userRepository.findById(userId);
+
+        User user = modelMapper.map(getUser, User.class);
+
+        if (getUser.isEmpty()) {
 
             throw new Exception("Not found user");
         }
 
-        return cafeTableRepository.findCafeTableByUser(user);
+        List<CafeTable> cafeTables = cafeTableRepository.findCafeTableByUser(user);
+
+        for (CafeTable cafeTable : cafeTables) {
+
+            cafeTableResponseDtoList.add(modelMapper.map(cafeTable, CafeTableResponseDto.class));
+        }
+
+        return cafeTableResponseDtoList;
     }
 
     @Override
@@ -126,7 +136,7 @@ public class CafeTableServiceImpl implements CafeTableService {
     }
 
     @Override
-    public CafeTableResponseDto updateWaiter(Long id, UserRequestDto userRequestDto) throws Exception {
+    public CafeTableResponseDto updateWaiter(Long id, Long userId) throws Exception {
 
         Optional<CafeTable> getCafeTable = cafeTableRepository.findById(id);
 
@@ -136,15 +146,10 @@ public class CafeTableServiceImpl implements CafeTableService {
         }
 
         CafeTable cafeTable = modelMapper.map(getCafeTable, CafeTable.class);
+       Optional<User> user=userRepository.findById(userId);
+       User newUser=modelMapper.map(user,User.class);
+        cafeTable.setUser(newUser);
 
-        Optional<User> getUser = userRepository.findByUsername(userRequestDto.getUserName());
-
-        if (getUser.isEmpty()) {
-
-            throw new Exception("Not fund user");
-        }
-
-        cafeTable.setUser(modelMapper.map(getUser, User.class));
 
         return modelMapper.map(cafeTableRepository.save(cafeTable), CafeTableResponseDto.class);
 
