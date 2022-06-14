@@ -10,7 +10,7 @@ public interface OrderService {
 
     OrderResponseDto update(Long id) throws UserPrincipalNotFoundException;
 
-    OrderResponseDto updateAndDelete(Long id) throws UserPrincipalNotFoundException;
+    OrderResponseDto delete(Long id) throws UserPrincipalNotFoundException;
 
     OrderResponseDto findById(Long tableId) throws UserPrincipalNotFoundException;
 }

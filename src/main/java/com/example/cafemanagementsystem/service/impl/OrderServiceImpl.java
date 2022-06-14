@@ -2,8 +2,10 @@ package com.example.cafemanagementsystem.service.impl;
 
 import com.example.cafemanagementsystem.domain.entity.CafeTable;
 import com.example.cafemanagementsystem.domain.entity.Order;
+import com.example.cafemanagementsystem.domain.entity.User;
 import com.example.cafemanagementsystem.domain.enums.OrderStatus;
 import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
+import com.example.cafemanagementsystem.dto.responce.UserResponseDto;
 import com.example.cafemanagementsystem.repository.AssortmentOrderRepository;
 import com.example.cafemanagementsystem.repository.CafeTableRepository;
 import com.example.cafemanagementsystem.repository.OrderRepository;
@@ -57,23 +59,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto updateAndDelete(Long id) throws UserPrincipalNotFoundException {
+    public OrderResponseDto delete(Long id) throws UserPrincipalNotFoundException {
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new UserPrincipalNotFoundException(String.format("Order with id %s is not found", id)));
-        assortmentOrderRepository.deleteAllByOrder(order.getId());
+        orderRepository.delete(order);
 
-        order.setOrderStatus(OrderStatus.CANCELED);
-        Order save = orderRepository.save(order);
-        return modelMapper.map(save, OrderResponseDto.class);
+        return modelMapper.map(id, OrderResponseDto.class);
     }
 
-
     @Override
-    public OrderResponseDto findById(Long tableId) throws UserPrincipalNotFoundException {
-
-        CafeTable cafeTable = cafeTableRepository.findById(tableId).orElseThrow(() ->
-                new UserPrincipalNotFoundException(String.format("Table with id %s is not found", tableId)));
-        Order order = orderRepository.findOrderByCafeTable(cafeTable);
+    public OrderResponseDto findById(Long id) throws UserPrincipalNotFoundException {
+        Order order = orderRepository.findById(id).orElseThrow(() ->
+                new UserPrincipalNotFoundException(String.format("Order with id %s is not found", id)));
         OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);
         return orderResponseDto;
     }

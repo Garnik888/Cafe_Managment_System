@@ -52,12 +52,12 @@ public class OrderController {
             throw new ApiRequestException(message);}}
 
 
-    @Operation(summary = "Update Order and delete assortment order",  security = @SecurityRequirement(name = "bearerAuth"))
-    @PutMapping("/cancel/{id}")
+    @Operation(summary = "Delete assortment order",  security = @SecurityRequirement(name = "bearerAuth"))
+    @DeleteMapping("/cancel/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
-    public ResponseEntity<OrderResponseDto> updateAndDelete(@PathVariable("id") Long id) {
+    public ResponseEntity<OrderResponseDto> delete(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.ok(orderService.updateAndDelete(id));
+            return ResponseEntity.ok(orderService.delete(id));
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
             throw new ApiRequestException(message);}}
