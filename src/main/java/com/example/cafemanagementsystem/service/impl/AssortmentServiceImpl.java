@@ -31,14 +31,14 @@ public class AssortmentServiceImpl implements AssortmentService {
         this.assortmentRepository = assortmentRepository;
     }
 
-@Override
-    public AssortmentResponseDto createAssortment(AssortmentRequestDto assortmentRequestDto) throws Exception {
-    Assortment assortment = modelMapper.map(assortmentRequestDto,Assortment.class);
+    @Override
+    public AssortmentResponseDto createAssortment(AssortmentRequestDto assortmentRequestDto) {
+        Assortment assortment = modelMapper.map(assortmentRequestDto, Assortment.class);
 
         return modelMapper.map(assortmentRepository.save(assortment), AssortmentResponseDto.class);
     }
 
-   @Override
+    @Override
     public AssortmentResponseDto deleteById(Long id) throws Exception {
 
         Optional<Assortment> getAssortment = assortmentRepository.findById(id);

@@ -21,7 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
         info = @Info(
                 title = "Cafe Management System",
                 version = "1",
-                description = "Cafe API",
+                description = "Cafe Management app",
                 contact = @Contact(name = "bootcamp", email = "aca.bootcamp@gmail.com")))
 @SecurityScheme(
         name = "bearerAuth",

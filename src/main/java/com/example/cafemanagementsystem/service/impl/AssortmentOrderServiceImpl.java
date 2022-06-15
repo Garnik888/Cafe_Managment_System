@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AssortmentOrderServiceImpl implements AssortmentOrderService {
@@ -83,12 +84,17 @@ public class AssortmentOrderServiceImpl implements AssortmentOrderService {
         return modelMapper.map(assortmentOrderRepo.save(assortmentOrder), AssortmentOrderResponseDto.class);
     }
 
+
     @Override
     public List<AssortmentOrderResponseDto> getByOrder(Long orderId) {
 
         List<AssortmentOrderResponseDto> assortmentOrderResponseDtoList = new ArrayList<>();
 
-        List<AssortmentOrder> assortmentOrders = assortmentOrderRepo.findAllByOrder(orderId);
+        Optional<Order> order = orderRepo.findById(orderId);
+
+        List<AssortmentOrder> assortmentOrders = assortmentOrderRepo.findAllByOrder(
+                modelMapper.map(order, Order.class)
+        );
 
         for (AssortmentOrder assortmentOrder : assortmentOrders) {
 

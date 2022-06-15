@@ -11,6 +11,6 @@ import java.util.List;
 public interface AssortmentOrderRepository extends JpaRepository<AssortmentOrder, Long> {
     void deleteAllByOrder(Long orderId);
     void deleteAllByOrder(Order order);
-    List<AssortmentOrder> findAllByOrder(Long orderId);
+    List<AssortmentOrder> findAllByOrder(Order order);
 
 }
