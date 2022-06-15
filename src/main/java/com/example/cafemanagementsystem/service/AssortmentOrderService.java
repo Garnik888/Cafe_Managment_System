@@ -10,15 +10,15 @@ public interface AssortmentOrderService {
     /**
      * Create assortment order.
      *
-     * @param orderId an uniq id whit help of it finding order in database.
+     * @param orderId      an uniq id whit help of it finding order in database.
      * @param assortmentId an uniq id whit help of it finding assortment in database.
-     * @param count input assortment count.
-     * @return a assortment order which user has set.
+     * @param count        input assortment count.
+     * @return assortment order which user has set.
      */
     AssortmentOrderResponseDto createAssortmentOrder(Long orderId, Long assortmentId, Integer count);
 
     /**
-     *Find assortment order by id and delete.
+     * Find assortment order by id and delete.
      *
      * @param id an uniq id whit help of it finding assortment order in database.
      * @return delete assortment order from database.
@@ -28,7 +28,7 @@ public interface AssortmentOrderService {
     /**
      * Update count assortment order
      *
-     * @param id – an uniq id whit help of it finding assortment order in database.
+     * @param id    – an uniq id whit help of it finding assortment order in database.
      * @param count new count for assortment order
      * @return update count assortment order
      */

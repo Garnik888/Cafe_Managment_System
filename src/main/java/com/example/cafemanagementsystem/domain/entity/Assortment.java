@@ -1,6 +1,6 @@
 package com.example.cafemanagementsystem.domain.entity;
 
-import com.example.cafemanagementsystem.domain.enums.AssortmentStatus;
+
 import com.example.cafemanagementsystem.domain.enums.AssortmentType;
 
 import javax.persistence.*;

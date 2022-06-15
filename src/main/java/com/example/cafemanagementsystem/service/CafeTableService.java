@@ -2,7 +2,6 @@ package com.example.cafemanagementsystem.service;
 
 
 import com.example.cafemanagementsystem.dto.request.CafeTableRequestDto;
-import com.example.cafemanagementsystem.dto.request.UserRequestDto;
 import com.example.cafemanagementsystem.dto.responce.CafeTableResponseDto;
 
 import java.util.List;

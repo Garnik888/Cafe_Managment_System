@@ -3,7 +3,6 @@ package com.example.cafemanagementsystem.config;
 
 import com.example.cafemanagementsystem.security.JwtAuthenticationEntryPoint;
 import com.example.cafemanagementsystem.security.JwtAuthenticationTokenFilter;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -36,10 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and().authorizeRequests()
-                .antMatchers("/api/auth/signIn" ).permitAll();
-             //   .antMatchers("/api/auth/signUp" ).hasAnyAuthority("ADMIN");
+                .antMatchers("/api/auth/signIn").permitAll();
 
-              //  .antMatchers("/api/v1/auth/signUp" ).hasRole("ADMIN");
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
     }
@@ -59,7 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
-
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
@@ -71,7 +67,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
-
 
 
     @Bean

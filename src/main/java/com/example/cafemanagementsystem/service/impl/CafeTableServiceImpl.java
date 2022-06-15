@@ -48,15 +48,14 @@ public class CafeTableServiceImpl implements CafeTableService {
             throw new Exception("Not found user");
         }
 
-       User user= modelMapper.map(getUser, User.class);
+        User user = modelMapper.map(getUser, User.class);
 
-        if(!user.getRoleType().equals(RoleType.WAITER)) {
+        if (!user.getRoleType().equals(RoleType.WAITER)) {
 
             throw new Exception("Invalid role type");
         }
 
         cafeTable.setUser(user);
-
 
         return modelMapper.map(cafeTableRepository.save(cafeTable), CafeTableResponseDto.class);
     }
@@ -146,8 +145,8 @@ public class CafeTableServiceImpl implements CafeTableService {
         }
 
         CafeTable cafeTable = modelMapper.map(getCafeTable, CafeTable.class);
-       Optional<User> user=userRepository.findById(userId);
-       User newUser=modelMapper.map(user,User.class);
+        Optional<User> user = userRepository.findById(userId);
+        User newUser = modelMapper.map(user, User.class);
         cafeTable.setUser(newUser);
 
 

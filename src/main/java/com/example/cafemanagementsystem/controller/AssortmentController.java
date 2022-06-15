@@ -2,7 +2,6 @@ package com.example.cafemanagementsystem.controller;
 
 import com.example.cafemanagementsystem.dto.request.AssortmentRequestDto;
 import com.example.cafemanagementsystem.dto.responce.AssortmentResponseDto;
-import com.example.cafemanagementsystem.exception.ApiRequestException;
 import com.example.cafemanagementsystem.service.impl.AssortmentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 
@@ -29,13 +27,8 @@ public class AssortmentController {
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping
     public ResponseEntity<AssortmentResponseDto> saveAssortment(@RequestBody AssortmentRequestDto assortmentRequestDto) throws Exception {
-        AssortmentResponseDto assortmentResponseDto=null;
-        try {
-            assortmentResponseDto = assortmentService.createAssortment(assortmentRequestDto);
-        } catch (UserPrincipalNotFoundException e) {
-            String message = e.getName();
-            throw new ApiRequestException(message);
-        }
+        AssortmentResponseDto assortmentResponseDto = null;
+        assortmentResponseDto = assortmentService.createAssortment(assortmentRequestDto);
         if (assortmentResponseDto == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -49,7 +42,7 @@ public class AssortmentController {
 
         AssortmentResponseDto assortmentResponseDto = assortmentService.deleteById(id);
 
-        if(assortmentResponseDto != null) {
+        if (assortmentResponseDto != null) {
 
             return ResponseEntity.ok(assortmentResponseDto);
         }
@@ -65,7 +58,7 @@ public class AssortmentController {
 
         AssortmentResponseDto assortmentResponseDto = assortmentService.updateByPrice(name, price);
 
-        if(assortmentResponseDto != null) {
+        if (assortmentResponseDto != null) {
 
             return ResponseEntity.ok(assortmentResponseDto);
         }
@@ -80,7 +73,7 @@ public class AssortmentController {
 
         List<AssortmentResponseDto> assortmentResponseDtos = assortmentService.getAllFood();
 
-        if(assortmentResponseDtos != null) {
+        if (assortmentResponseDtos != null) {
 
             return ResponseEntity.ok(assortmentResponseDtos);
         }
@@ -95,7 +88,7 @@ public class AssortmentController {
 
         List<AssortmentResponseDto> assortmentResponseDtos = assortmentService.getAllDrink();
 
-        if(assortmentResponseDtos != null) {
+        if (assortmentResponseDtos != null) {
 
             return ResponseEntity.ok(assortmentResponseDtos);
         }

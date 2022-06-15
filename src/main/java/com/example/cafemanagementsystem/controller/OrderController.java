@@ -23,12 +23,12 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @Operation(summary = "Create New Order",  security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Create New Order", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
     public ResponseEntity<OrderResponseDto> save(@PathVariable("id") Long tableId) {
 
-        OrderResponseDto  orderResponseDto=null;
+        OrderResponseDto orderResponseDto = null;
         try {
             orderResponseDto = orderService.createOrder(tableId);
         } catch (UserPrincipalNotFoundException e) {
@@ -41,7 +41,7 @@ public class OrderController {
         return ResponseEntity.ok(orderResponseDto);
     }
 
-    @Operation(summary = "Update Order and delete assortment order",  security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Update Order ", security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/close/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
     public ResponseEntity<OrderResponseDto> update(@PathVariable("id") Long id) {
@@ -49,10 +49,12 @@ public class OrderController {
             return ResponseEntity.ok(orderService.update(id));
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
-            throw new ApiRequestException(message);}}
+            throw new ApiRequestException(message);
+        }
+    }
 
 
-    @Operation(summary = "Delete assortment order",  security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Delete  order", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/cancel/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
     public ResponseEntity<OrderResponseDto> delete(@PathVariable("id") Long id) {
@@ -60,9 +62,11 @@ public class OrderController {
             return ResponseEntity.ok(orderService.delete(id));
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
-            throw new ApiRequestException(message);}}
+            throw new ApiRequestException(message);
+        }
+    }
 
-    @Operation(summary = "Get Order for table id",  security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Get Order for table id", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
     public ResponseEntity<OrderResponseDto> findById(@PathVariable("id") Long Id) {

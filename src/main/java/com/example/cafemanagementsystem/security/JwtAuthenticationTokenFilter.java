@@ -1,10 +1,6 @@
 package com.example.cafemanagementsystem.security;
 
-import com.example.cafemanagementsystem.domain.entity.UserPrincipal;
 import com.example.cafemanagementsystem.util.JwtTokenUtil;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

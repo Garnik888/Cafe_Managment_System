@@ -1,21 +1,15 @@
 package com.example.cafemanagementsystem.service.impl;
 
 import com.example.cafemanagementsystem.domain.entity.Assortment;
-import com.example.cafemanagementsystem.domain.entity.CafeTable;
-import com.example.cafemanagementsystem.domain.entity.Order;
 import com.example.cafemanagementsystem.domain.enums.AssortmentType;
-import com.example.cafemanagementsystem.domain.enums.OrderStatus;
 import com.example.cafemanagementsystem.dto.request.AssortmentRequestDto;
 import com.example.cafemanagementsystem.dto.responce.AssortmentResponseDto;
-import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 import com.example.cafemanagementsystem.repository.AssortmentRepository;
 import com.example.cafemanagementsystem.service.AssortmentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

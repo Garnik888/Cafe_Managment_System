@@ -25,7 +25,6 @@ public class JwtTokenUtil {
     }
 
 
-
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
@@ -55,7 +54,7 @@ public class JwtTokenUtil {
         final Date createdDate = new Date();
         final Date expirationDate = calculateExpirationDate(createdDate);
         Claims claims = Jwts.claims().setSubject(subject);
-       //claims.put("scopes", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        //claims.put("scopes", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -66,7 +65,7 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-//    private String generateToken(Map<String, Object> claims, String subject) {
+    //    private String generateToken(Map<String, Object> claims, String subject) {
 //        final long now = System.currentTimeMillis();
 //        return Jwts.builder()
 //                .setClaims(claims)
@@ -86,5 +85,5 @@ public class JwtTokenUtil {
         return new Date(createdDate.getTime() + expiration * 2000);
     }
 
-    }
+}
 

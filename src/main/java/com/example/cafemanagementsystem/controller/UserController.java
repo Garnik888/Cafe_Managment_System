@@ -47,7 +47,7 @@ public class UserController {
         return ResponseEntity.ok(signUpResponseDto);
     }
 
-
+    @Operation(summary = "Sign in user")
     @PostMapping("/signIn")
     public ResponseEntity<SignInResponseDto> signIn(@RequestBody SignInRequestDto signInRequestDto) {
         SignInResponseDto signInResponseDto = null;
@@ -75,7 +75,7 @@ public class UserController {
             String message = e.getName();
             throw new ApiRequestException(message);}}
 
-    @Operation(summary = "Get user",  security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Get user by id",  security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserResponseDto> findById(@PathVariable("id") Long userId) {
@@ -87,7 +87,7 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "Get user",  security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Get all waiters",  security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/waiter")
     @PreAuthorize("hasAnyAuthority('MANAGER','ADMIN')")
     public ResponseEntity<List<UserResponseDto>> findByRoleTypeWaiter() {
