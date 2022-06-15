@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         SignInResponseDto signInResponseDto = new SignInResponseDto();
 
-        signInResponseDto.setToken(jwtTokenUtil.generateToken(user));
+        signInResponseDto.setToken(jwtTokenUtil.generateToken(user.getUsername()));
         signInResponseDto.setType(String.valueOf(user.getRoleType()));
 
         return signInResponseDto;
