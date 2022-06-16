@@ -8,6 +8,7 @@ import com.example.cafemanagementsystem.dto.responce.CafeTableResponseDto;
 import com.example.cafemanagementsystem.repository.CafeTableRepository;
 import com.example.cafemanagementsystem.repository.UserRepository;
 import com.example.cafemanagementsystem.service.CafeTableService;
+import com.example.cafemanagementsystem.validator.CafeTableValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class CafeTableServiceImpl implements CafeTableService {
 
         User user = modelMapper.map(getUser, User.class);
 
-        if (!user.getRoleType().equals(RoleType.WAITER)) {
+        if (CafeTableValidator.isUserWaiter(user)) {
 
             throw new Exception("Invalid role type");
         }

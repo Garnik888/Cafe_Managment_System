@@ -15,7 +15,7 @@ public interface AssortmentOrderService {
      * @param count        input assortment count.
      * @return assortment order which user has set.
      */
-    AssortmentOrderResponseDto createAssortmentOrder(Long orderId, Long assortmentId, Integer count);
+    AssortmentOrderResponseDto createAssortmentOrder(Long orderId, Long assortmentId, Integer count) throws Exception;
 
     /**
      * Find assortment order by id and delete.
@@ -23,7 +23,7 @@ public interface AssortmentOrderService {
      * @param id an uniq id whit help of it finding assortment order in database.
      * @return delete assortment order from database.
      */
-    AssortmentOrderResponseDto updateStatusAndDelete(Long id);
+    AssortmentOrderResponseDto deleteAssortmentOrder(Long id);
 
     /**
      * Update count assortment order

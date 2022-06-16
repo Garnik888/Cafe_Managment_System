@@ -25,7 +25,7 @@ public class AssortmentOrderController {
     @PostMapping("/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
     public ResponseEntity<?> saveAssortmentOrder(@PathVariable("id") Long orderId,
-                                                 @RequestBody Long assortmentId, Integer count) {
+                                                 @RequestBody Long assortmentId, Integer count) throws Exception {
 
         AssortmentOrderResponseDto assortmentOrderResponseDto =
                 assortmentOrderService.createAssortmentOrder(orderId, assortmentId, count);
@@ -47,7 +47,7 @@ public class AssortmentOrderController {
     public ResponseEntity<?> updateStatusAndDelete(@PathVariable("id") Long id) {
 
         AssortmentOrderResponseDto assortmentOrderResponseDto =
-                assortmentOrderService.updateStatusAndDelete(id);
+                assortmentOrderService.deleteAssortmentOrder(id);
 
         if (assortmentOrderResponseDto != null) {
 

@@ -9,6 +9,7 @@ import com.example.cafemanagementsystem.repository.AssortmentOrderRepository;
 import com.example.cafemanagementsystem.repository.AssortmentRepository;
 import com.example.cafemanagementsystem.repository.OrderRepository;
 import com.example.cafemanagementsystem.service.AssortmentOrderService;
+import com.example.cafemanagementsystem.validator.AssortmentOrderValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,17 @@ public class AssortmentOrderServiceImpl implements AssortmentOrderService {
     }
 
     @Override
-    public AssortmentOrderResponseDto createAssortmentOrder(Long orderId, Long assortmentId, Integer count) {
+    public AssortmentOrderResponseDto createAssortmentOrder(Long orderId,
+                                                            Long assortmentId,
+                                                            Integer count) throws Exception {
 
         Order order = orderRepo.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Order with id %s is not found", orderId)));
+
+        if(!AssortmentOrderValidator.isOrderOpen(order)) {
+
+            throw new Exception("Order is not open");
+        }
 
         Assortment assortment = assortmentRepo.findById(assortmentId).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Assortment with is %s is not found", assortmentId)));
@@ -53,7 +61,7 @@ public class AssortmentOrderServiceImpl implements AssortmentOrderService {
     }
 
     @Override
-    public AssortmentOrderResponseDto updateStatusAndDelete(Long id) {
+    public AssortmentOrderResponseDto deleteAssortmentOrder(Long id) {
 
         AssortmentOrderResponseDto assortmentOrderResponseDto;
 

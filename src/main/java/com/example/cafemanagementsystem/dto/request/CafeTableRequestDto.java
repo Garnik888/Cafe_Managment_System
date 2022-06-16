@@ -10,9 +10,9 @@ public class CafeTableRequestDto {
     public CafeTableRequestDto() {
     }
 
-    public CafeTableRequestDto(String tableName, Boolean reserve) {
+    public CafeTableRequestDto(String tableName) {
         this.tableName = tableName;
-        this.reserve = reserve;
+        this.reserve = false;
     }
 
     public String getTableName() {

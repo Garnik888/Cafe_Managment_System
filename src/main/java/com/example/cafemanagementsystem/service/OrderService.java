@@ -6,9 +6,9 @@ import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 public interface OrderService {
 
-    OrderResponseDto createOrder(Long tableId) throws UserPrincipalNotFoundException;
+    OrderResponseDto createOrder(Long tableId) throws Exception;
 
-    OrderResponseDto update(Long id) throws UserPrincipalNotFoundException;
+    OrderResponseDto update(Long id) throws Exception;
 
     OrderResponseDto delete(Long id) throws UserPrincipalNotFoundException;
 
