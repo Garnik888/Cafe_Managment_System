@@ -42,9 +42,9 @@ public class AssortmentOrderController {
     @Operation(summary = "Order  delete",
             security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("cancelled/{id}")
-    @PreAuthorize("hasAuthority('WAITER')")
+    @PreAuthorize("hasAuthority('MANAGER')")
 
-    public ResponseEntity<?> updateStatusAndDelete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> assortmentOrderDelete(@PathVariable("id") Long id) {
 
         AssortmentOrderResponseDto assortmentOrderResponseDto =
                 assortmentOrderService.deleteAssortmentOrder(id);

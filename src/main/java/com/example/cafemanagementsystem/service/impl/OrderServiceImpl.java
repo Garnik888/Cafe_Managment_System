@@ -36,7 +36,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto createOrder(Long tableId) throws Exception {
-        Optional<CafeTable> cafeTable = Optional.ofNullable(cafeTableRepository.findById(tableId).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("Table with id %s is not found", tableId))));
+        Optional<CafeTable> cafeTable = Optional.ofNullable(cafeTableRepository.findById(tableId).orElseThrow(()
+                -> new UserPrincipalNotFoundException(String.format("Table with id %s is not found", tableId))));
         Order order = new Order();
         if (order.getCafeTable().isReserve()) {
             throw new Exception("Cafe table is reserved");

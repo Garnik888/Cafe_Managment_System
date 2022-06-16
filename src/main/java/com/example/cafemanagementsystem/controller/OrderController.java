@@ -26,7 +26,7 @@ public class OrderController {
     @Operation(summary = "Create New Order", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/{id}")
     @PreAuthorize("hasAuthority('WAITER')")
-    public ResponseEntity<OrderResponseDto> save(@PathVariable("id") Long tableId) {
+    public ResponseEntity<OrderResponseDto> save(@PathVariable("id") Long tableId)  {
 
         OrderResponseDto orderResponseDto = null;
         try {
@@ -34,6 +34,8 @@ public class OrderController {
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
             throw new ApiRequestException(message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         if (orderResponseDto == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -50,6 +52,8 @@ public class OrderController {
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
             throw new ApiRequestException(message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -27,8 +27,8 @@ public class AssortmentController {
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping
     public ResponseEntity<AssortmentResponseDto> saveAssortment(@RequestBody AssortmentRequestDto assortmentRequestDto) throws Exception {
-        AssortmentResponseDto assortmentResponseDto = null;
-        assortmentResponseDto = assortmentService.createAssortment(assortmentRequestDto);
+
+        AssortmentResponseDto assortmentResponseDto = assortmentService.createAssortment(assortmentRequestDto);
         if (assortmentResponseDto == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
