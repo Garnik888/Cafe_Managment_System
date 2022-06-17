@@ -68,9 +68,19 @@ public class UserController {
     @Operation(summary = "Delete user",  security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{username}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<UserResponseDto> updateAndDelete(@PathVariable("username") String username) {
+    public ResponseEntity<UserResponseDto> delete(@PathVariable("username") String username) {
         try {
             return ResponseEntity.ok(userService.deleteUser(username));
+        } catch (UserPrincipalNotFoundException e) {
+            String message = e.getName();
+            throw new ApiRequestException(message);}}
+
+    @Operation(summary = "Update password",  security = @SecurityRequirement(name = "bearerAuth"))
+    @PutMapping("/{username}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<UserResponseDto> updatePassword(@PathVariable("username") String username,@RequestBody String newPassword) {
+        try {
+            return ResponseEntity.ok(userService.updatePassword(username,newPassword));
         } catch (UserPrincipalNotFoundException e) {
             String message = e.getName();
             throw new ApiRequestException(message);}}
@@ -111,5 +121,7 @@ public class UserController {
             throw new ApiRequestException(message);
         }
     }
+
+
 }
 

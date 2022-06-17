@@ -27,4 +27,6 @@ public interface UserService {
     Object findByRoleTypeWaiter() throws UserPrincipalNotFoundException;
 
     Object findAll() throws UserPrincipalNotFoundException;
+
+   UserResponseDto updatePassword(String username, String newPassword) throws UserPrincipalNotFoundException;
 }

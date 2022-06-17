@@ -65,7 +65,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto update(Long id) throws UserPrincipalNotFoundException {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("Order with id %s is not found", id)));
+        Order order = orderRepository.findById(id).orElseThrow(() ->
+                new UserPrincipalNotFoundException(String.format("Order with id %s is not found", id)));
 
         if (!order.getCafeTable().isReserve()) {
             throw new RuntimeException("Cafe table is reserved");
@@ -73,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
         if(OrderValidator.isOrderStatusOpen(order)) {
 
-            throw new RuntimeException("Order status is not OPEN you cane not closed");
+            throw new RuntimeException("Order status is not OPEN you can not close");
         }
         order.setOrderStatus(OrderStatus.CLOSED);
         Order save = orderRepository.save(order);

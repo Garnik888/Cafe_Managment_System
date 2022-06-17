@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -128,4 +129,15 @@ public class UserServiceImpl implements UserService {
         }
         return userResponseDtoList;
     }
+
+    @Override
+    public UserResponseDto updatePassword(String username, String newPassword) throws UserPrincipalNotFoundException {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UserPrincipalNotFoundException(String.format("User with username %s is not found", username)));
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        userRepository.save(user);
+        return modelMapper.map(user,UserResponseDto.class);
+    }
+
 }

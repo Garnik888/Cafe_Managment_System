@@ -7,7 +7,7 @@ public class CafeTableValidator {
 
     public static boolean isUserWaiter(User user) {
 
-        return user.getRoleType().equals(RoleType.WAITER);
+        return (!user.getRoleType().equals(RoleType.WAITER));
     }
 
 }

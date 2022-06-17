@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
@@ -34,7 +35,7 @@ public class CafeManagementSystemApplication {
         SpringApplication.run(CafeManagementSystemApplication.class, args);
     }
 
-    // @Bean
+    //@Bean
     public CommandLineRunner runner(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         return args -> {
             User admin = new User();

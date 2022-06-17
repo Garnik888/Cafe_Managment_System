@@ -39,7 +39,7 @@ public class CafeTableServiceImpl implements CafeTableService {
 
         if (cafeTable == null) {
 
-            throw new RuntimeException("Cafe table is null");
+            throw new RuntimeException("Cafe table is not found");
         }
 
         Optional<User> getUser = userRepository.findById(userId);

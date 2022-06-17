@@ -2,7 +2,7 @@
 
 Cafe Management app
 
-Built with Spring Boot, MySQL, Spring Web, Spring Data JPA, Spring Security with JWT
+Built with Spring Boot, MySQL, Spring Web, Spring Data JPA, JUNIT, Spring Security with JWT
 
 ## Installation and Setup Instructions
 Clone down this repository. You will need JDK 11 and Maven installed on your machine.
