@@ -35,6 +35,14 @@ public interface AssortmentOrderService {
     AssortmentOrderResponseDto updateCount(Long id, Integer count);
 
     /**
+     * Update assortment status to CANCELLED
+     *
+     * @param id – an uniq id whit help of it finding assortment order in database.
+     * @return update assortment status to CANCELLED
+     */
+    AssortmentOrderResponseDto updateAssortmentStatus(Long id);
+
+    /**
      * Assortment orders assigned to given order id.
      *
      * @param orderId -  an uniq id whit help of it finding order in database.

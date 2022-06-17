@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface CafeTableService {
 
-    CafeTableResponseDto createCafeTable(Long userId, CafeTableRequestDto cafeTableRequestDto) throws Exception;
+    CafeTableResponseDto createCafeTable(Long userId, CafeTableRequestDto cafeTableRequestDto) ;
 
-    CafeTableResponseDto deleteById(Long id) throws Exception;
+    CafeTableResponseDto deleteById(Long id) ;
 
     List<CafeTableResponseDto> getAllFreeTables();
 
-    List<CafeTableResponseDto> getTableByWaiterId(Long userId) throws Exception;
-    CafeTableResponseDto updateName(String name, String newName) throws Exception;
+    List<CafeTableResponseDto> getTableByWaiterId(Long userId) ;
+    CafeTableResponseDto updateName(String name, String newName) ;
 
-    CafeTableResponseDto updateWaiter(Long id, Long userId) throws Exception;
+    CafeTableResponseDto updateWaiter(Long id, Long userId) ;
 }

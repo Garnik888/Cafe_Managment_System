@@ -32,9 +32,10 @@ public class CafeTableController {
     @PostMapping("/{id}")
     @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> saveCafeTable(@PathVariable("id") Long userId,
-                                           @RequestBody CafeTableRequestDto cafeTableRequestDto) throws Exception {
+                                           @RequestBody CafeTableRequestDto cafeTableRequestDto) {
 
-        CafeTableResponseDto cafeTableResponseDto = cafeTableService.createCafeTable(userId, cafeTableRequestDto);
+        CafeTableResponseDto cafeTableResponseDto = cafeTableService.createCafeTable(userId,
+                cafeTableRequestDto);
 
         if (cafeTableResponseDto != null) {
 
@@ -47,7 +48,7 @@ public class CafeTableController {
     @Operation(summary = "Delete cafe table", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MANAGER')")
-    public ResponseEntity<?> deleteCafeTable(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<?> deleteCafeTable(@PathVariable("id") Long id) {
 
         CafeTableResponseDto cafeTableResponseDto = cafeTableService.deleteById(id);
 
@@ -77,7 +78,7 @@ public class CafeTableController {
     @Operation(summary = "Get table by waiter id", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MANAGER')")
-    public ResponseEntity<?> getTableByWaiterId(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<?> getTableByWaiterId(@PathVariable("id") Long id) {
 
         List<CafeTableResponseDto> cafeTableResponseDtos = cafeTableService.getTableByWaiterId(id);
 
@@ -92,7 +93,8 @@ public class CafeTableController {
     @Operation(summary = "Update name", security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/{tableName}")
     @PreAuthorize("hasAuthority('MANAGER')")
-    public ResponseEntity<?> updateName(@PathVariable("tableName") String name, @RequestBody String newName) throws Exception {
+    public ResponseEntity<?> updateName(@PathVariable("tableName") String name,
+                                        @RequestBody String newName) {
 
         CafeTableResponseDto cafeTableResponseDto = cafeTableService.updateName(name, newName);
 
@@ -107,7 +109,7 @@ public class CafeTableController {
     @Operation(summary = "Update waiter", security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/waiter/{id}")
     @PreAuthorize("hasAuthority('MANAGER')")
-    public ResponseEntity<?> upDateWaiter(@PathVariable("id") Long id, @RequestBody Long userId) throws Exception {
+    public ResponseEntity<?> upDateWaiter(@PathVariable("id") Long id, @RequestBody Long userId) {
 
         CafeTableResponseDto cafeTableResponseDto = cafeTableService.updateWaiter(id, userId);
 

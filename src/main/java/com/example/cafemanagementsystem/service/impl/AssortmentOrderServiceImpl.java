@@ -38,25 +38,35 @@ public class AssortmentOrderServiceImpl implements AssortmentOrderService {
     @Override
     public AssortmentOrderResponseDto createAssortmentOrder(Long orderId,
                                                             Long assortmentId,
-                                                            Integer count) throws Exception {
+                                                            Integer count) {
 
         Order order = orderRepo.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Order with id %s is not found", orderId)));
 
-        if(!AssortmentOrderValidator.isOrderOpen(order)) {
+        if (!AssortmentOrderValidator.isOrderOpen(order)) {
 
-            throw new Exception("Order is not open");
+            throw new RuntimeException("Order is not open");
         }
 
         Assortment assortment = assortmentRepo.findById(assortmentId).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Assortment with is %s is not found", assortmentId)));
 
-        AssortmentOrder assortmentOrder = new AssortmentOrder();
-        assortmentOrder.setAssortmentStatus(AssortmentStatus.ACTIVE);
-        assortmentOrder.setOrder(order);
-        assortmentOrder.setAssortment(assortment);
-        assortmentOrder.setCount(count);
-        AssortmentOrder save = assortmentOrderRepo.save(assortmentOrder);
+        Optional<AssortmentOrder> getAssortmentOrder = assortmentOrderRepo.findByOrderAndAssortment(order, assortment);
+
+        if (getAssortmentOrder.isPresent()) {
+
+            AssortmentOrder assortmentOrder = getAssortmentOrder.get();
+            assortmentOrder.setCount(assortmentOrder.getCount() + count);
+
+            return modelMapper.map(assortmentOrderRepo.save(assortmentOrder), AssortmentOrderResponseDto.class);
+        }
+
+        AssortmentOrder newAssortmentOrder = new AssortmentOrder();
+        newAssortmentOrder.setAssortmentStatus(AssortmentStatus.ACTIVE);
+        newAssortmentOrder.setOrder(order);
+        newAssortmentOrder.setAssortment(assortment);
+        newAssortmentOrder.setCount(count);
+        AssortmentOrder save = assortmentOrderRepo.save(newAssortmentOrder);
         return modelMapper.map(save, AssortmentOrderResponseDto.class);
     }
 
@@ -87,11 +97,35 @@ public class AssortmentOrderServiceImpl implements AssortmentOrderService {
                         String.format("Assortment order by id %s not found", id))
         );
 
+        Order order = orderRepo.findById(assortmentOrder.getOrder().getId()).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("Order with id %s is not found",
+                        assortmentOrder.getOrder().getId())));
+
+        if (!AssortmentOrderValidator.isOrderOpen(order)) {
+
+            throw new RuntimeException("Order is not open");
+        }
+
+        if(AssortmentOrderValidator.isAssortmentOrderCancelled(assortmentOrder)) {
+
+            throw new RuntimeException("Assortment order cancelled");
+        }
+
         assortmentOrder.setCount(count);
 
         return modelMapper.map(assortmentOrderRepo.save(assortmentOrder), AssortmentOrderResponseDto.class);
     }
 
+    @Override
+    public AssortmentOrderResponseDto updateAssortmentStatus(Long id) {
+        AssortmentOrder assortmentOrder = assortmentOrderRepo.findById(id).orElseThrow(
+                () -> new UsernameNotFoundException(
+                        String.format("Assortment order by id %s not found", id))
+        );
+
+        assortmentOrder.setAssortmentStatus(AssortmentStatus.CANCELLED);
+        return modelMapper.map(assortmentOrderRepo.save(assortmentOrder), AssortmentOrderResponseDto.class);
+    }
 
     @Override
     public List<AssortmentOrderResponseDto> getByOrder(Long orderId) {

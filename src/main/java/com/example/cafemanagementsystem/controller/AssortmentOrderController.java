@@ -75,6 +75,21 @@ public class AssortmentOrderController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can not found assortment order");
     }
 
+    @Operation(summary = "Update assortment order status to Cancelled",
+            security = @SecurityRequirement(name = "bearerAuth"))
+    @PutMapping("status/{id}")
+    @PreAuthorize("hasAuthority('WAITER')")
+    public ResponseEntity<?> updateAssortmentStatus(@PathVariable("id") Long id) {
+        AssortmentOrderResponseDto assortmentOrderResponseDto =
+                assortmentOrderService.updateAssortmentStatus(id);
+
+        if (assortmentOrderResponseDto != null) {
+
+            return ResponseEntity.ok(assortmentOrderResponseDto);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can not found assortment order");
+    }
 
     @Operation(summary = "Get all assortment order by order",
             security = @SecurityRequirement(name = "bearerAuth"))

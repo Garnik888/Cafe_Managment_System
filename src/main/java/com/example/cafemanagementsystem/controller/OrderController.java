@@ -60,7 +60,7 @@ public class OrderController {
 
     @Operation(summary = "Delete  order", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/cancel/{id}")
-    @PreAuthorize("hasAuthority('WAITER')")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<OrderResponseDto> delete(@PathVariable("id") Long id) {
         try {
             return ResponseEntity.ok(orderService.delete(id));

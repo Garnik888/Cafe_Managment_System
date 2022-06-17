@@ -8,6 +8,12 @@ import java.util.List;
 
 public interface AssortmentService {
 
+    /**
+     * Return assortment
+     *
+     * @param assortmentRequestDto
+     * @return assortment
+     */
     AssortmentResponseDto createAssortment(AssortmentRequestDto assortmentRequestDto);
 
     /**

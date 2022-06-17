@@ -26,7 +26,8 @@ public class AssortmentController {
     @Operation(summary = "Create assortment", security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping
-    public ResponseEntity<AssortmentResponseDto> saveAssortment(@RequestBody AssortmentRequestDto assortmentRequestDto) throws Exception {
+    public ResponseEntity<AssortmentResponseDto> saveAssortment(
+            @RequestBody AssortmentRequestDto assortmentRequestDto) {
 
         AssortmentResponseDto assortmentResponseDto = assortmentService.createAssortment(assortmentRequestDto);
         if (assortmentResponseDto == null) {
@@ -38,7 +39,7 @@ public class AssortmentController {
     @Operation(summary = "Delete assortment", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MANAGER')")
-    public ResponseEntity<?> deleteAssortment(@PathVariable(name = "id") Long id) throws Exception {
+    public ResponseEntity<?> deleteAssortment(@PathVariable(name = "id") Long id) {
 
         AssortmentResponseDto assortmentResponseDto = assortmentService.deleteById(id);
 
@@ -54,7 +55,7 @@ public class AssortmentController {
     @PutMapping("/{name}")
     @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<?> updateByPrice(@PathVariable("name") String name,
-                                           @RequestBody Double price) throws Exception {
+                                           @RequestBody Double price) {
 
         AssortmentResponseDto assortmentResponseDto = assortmentService.updateByPrice(name, price);
 

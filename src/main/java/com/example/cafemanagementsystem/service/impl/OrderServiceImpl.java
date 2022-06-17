@@ -3,8 +3,8 @@ package com.example.cafemanagementsystem.service.impl;
 import com.example.cafemanagementsystem.domain.entity.CafeTable;
 import com.example.cafemanagementsystem.domain.entity.Order;
 import com.example.cafemanagementsystem.domain.enums.OrderStatus;
+import com.example.cafemanagementsystem.dto.responce.AssortmentOrderResponseDto;
 import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
-import com.example.cafemanagementsystem.repository.AssortmentOrderRepository;
 import com.example.cafemanagementsystem.repository.CafeTableRepository;
 import com.example.cafemanagementsystem.repository.OrderRepository;
 import com.example.cafemanagementsystem.service.OrderService;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,28 +24,35 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
     private final CafeTableRepository cafeTableRepository;
-    private final AssortmentOrderRepository assortmentOrderRepository;
+    private final AssortmentOrderServiceImpl assortmentOrderService;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, CafeTableRepository cafeTableRepository, AssortmentOrderRepository assortmentOrderRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            ModelMapper modelMapper,
+                            CafeTableRepository cafeTableRepository,
+                            AssortmentOrderServiceImpl assortmentOrderService) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.cafeTableRepository = cafeTableRepository;
-        this.assortmentOrderRepository = assortmentOrderRepository;
+        this.assortmentOrderService = assortmentOrderService;
     }
 
 
     @Override
     public OrderResponseDto createOrder(Long tableId) throws Exception {
-        Optional<CafeTable> cafeTable = Optional.ofNullable(cafeTableRepository.findById(tableId).orElseThrow(()
+        Optional<CafeTable> getCafeTable = Optional.ofNullable(cafeTableRepository.findById(tableId).orElseThrow(()
                 -> new UserPrincipalNotFoundException(String.format("Table with id %s is not found", tableId))));
+
         Order order = new Order();
-        if (order.getCafeTable().isReserve()) {
-            throw new Exception("Cafe table is reserved");
+
+        CafeTable cafeTable = modelMapper.map(getCafeTable, CafeTable.class);
+
+        if (cafeTable.isReserve()) {
+            throw new RuntimeException("Cafe table is reserved");
         }
 
-        cafeTable.get().setReserve(true);
-        cafeTableRepository.save(cafeTable.get());
+        cafeTable.setReserve(true);
+        cafeTableRepository.save(cafeTable);
         order.setOrderStatus(OrderStatus.OPEN);
         order.setDateTime(LocalDateTime.now());
 
@@ -56,16 +64,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto update(Long id) throws Exception {
+    public OrderResponseDto update(Long id) throws UserPrincipalNotFoundException {
         Order order = orderRepository.findById(id).orElseThrow(() -> new UserPrincipalNotFoundException(String.format("Order with id %s is not found", id)));
 
         if (!order.getCafeTable().isReserve()) {
-            throw new Exception("Cafe table is reserved");
+            throw new RuntimeException("Cafe table is reserved");
         }
 
-        if(!OrderValidator.isOrderStatusOpen(order)) {
+        if(OrderValidator.isOrderStatusOpen(order)) {
 
-            throw new Exception("Order status is not OPEN you cane not closed");
+            throw new RuntimeException("Order status is not OPEN you cane not closed");
         }
         order.setOrderStatus(OrderStatus.CLOSED);
         Order save = orderRepository.save(order);
@@ -79,6 +87,10 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto delete(Long id) throws UserPrincipalNotFoundException {
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new UserPrincipalNotFoundException(String.format("Order with id %s is not found", id)));
+
+        if(!OrderValidator.haveOrderAssortment(id)){
+                throw new RuntimeException("You cane not delete order, order have assortment");
+        }
 
         CafeTable cafeTable = cafeTableRepository.findById(order.getTableCafe().getId()).get();
         cafeTable.setReserve(false);

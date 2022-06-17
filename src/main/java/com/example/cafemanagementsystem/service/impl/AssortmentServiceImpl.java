@@ -33,13 +33,13 @@ public class AssortmentServiceImpl implements AssortmentService {
     }
 
     @Override
-    public AssortmentResponseDto deleteById(Long id) throws Exception {
+    public AssortmentResponseDto deleteById(Long id) {
 
         Optional<Assortment> getAssortment = assortmentRepository.findById(id);
 
         if (getAssortment.isEmpty()) {
 
-            throw new Exception("Assortment not found");
+            throw new RuntimeException("Assortment not found");
         }
 
         AssortmentResponseDto assortmentResponseDto = modelMapper.map(getAssortment, AssortmentResponseDto.class);
@@ -51,13 +51,13 @@ public class AssortmentServiceImpl implements AssortmentService {
 
 
     @Override
-    public AssortmentResponseDto updateByPrice(String name, Double price) throws Exception {
+    public AssortmentResponseDto updateByPrice(String name, Double price) {
 
         Optional<Assortment> getAssortment = assortmentRepository.findByName(name);
 
         if (getAssortment.isEmpty()) {
 
-            throw new Exception("Assortment not found");
+            throw new RuntimeException("Assortment not found");
         }
 
         Assortment assortment = modelMapper.map(getAssortment, Assortment.class);

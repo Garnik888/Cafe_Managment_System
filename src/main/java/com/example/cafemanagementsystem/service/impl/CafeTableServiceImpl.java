@@ -33,27 +33,27 @@ public class CafeTableServiceImpl implements CafeTableService {
     }
 
     @Override
-    public CafeTableResponseDto createCafeTable(Long userId, CafeTableRequestDto cafeTableRequestDto) throws Exception {
+    public CafeTableResponseDto createCafeTable(Long userId, CafeTableRequestDto cafeTableRequestDto) {
 
         CafeTable cafeTable = modelMapper.map(cafeTableRequestDto, CafeTable.class);
 
         if (cafeTable == null) {
 
-            throw new Exception("Cafe table is null");
+            throw new RuntimeException("Cafe table is null");
         }
 
         Optional<User> getUser = userRepository.findById(userId);
 
         if (getUser.isEmpty()) {
 
-            throw new Exception("Not found user");
+            throw new RuntimeException("Not found user");
         }
 
         User user = modelMapper.map(getUser, User.class);
 
         if (CafeTableValidator.isUserWaiter(user)) {
 
-            throw new Exception("Invalid role type");
+            throw new RuntimeException("Invalid role type");
         }
 
         cafeTable.setUser(user);
@@ -62,13 +62,13 @@ public class CafeTableServiceImpl implements CafeTableService {
     }
 
     @Override
-    public CafeTableResponseDto deleteById(Long id) throws Exception {
+    public CafeTableResponseDto deleteById(Long id) {
 
         Optional<CafeTable> cafeTable = cafeTableRepository.findById(id);
 
         if (cafeTable.isEmpty()) {
 
-            throw new Exception("Cafe table not found");
+            throw new RuntimeException("Cafe table not found");
         }
 
         CafeTableResponseDto cafeTableResponseDto = modelMapper.map(cafeTable, CafeTableResponseDto.class);
@@ -95,7 +95,7 @@ public class CafeTableServiceImpl implements CafeTableService {
     }
 
     @Override
-    public List<CafeTableResponseDto> getTableByWaiterId(Long userId) throws Exception {
+    public List<CafeTableResponseDto> getTableByWaiterId(Long userId) {
 
         List<CafeTableResponseDto> cafeTableResponseDtoList = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public class CafeTableServiceImpl implements CafeTableService {
 
         if (getUser.isEmpty()) {
 
-            throw new Exception("Not found user");
+            throw new RuntimeException("Not found user");
         }
 
         List<CafeTable> cafeTables = cafeTableRepository.findCafeTableByUser(user);
@@ -119,13 +119,13 @@ public class CafeTableServiceImpl implements CafeTableService {
     }
 
     @Override
-    public CafeTableResponseDto updateName(String name, String newName) throws Exception {
+    public CafeTableResponseDto updateName(String name, String newName) {
 
         Optional<CafeTable> getCafeTable = cafeTableRepository.findByTableName(name);
 
         if (getCafeTable.isEmpty()) {
 
-            throw new Exception("Not found cafe table");
+            throw new RuntimeException("Not found cafe table");
         }
 
         CafeTable cafeTable = modelMapper.map(getCafeTable, CafeTable.class);
@@ -136,13 +136,13 @@ public class CafeTableServiceImpl implements CafeTableService {
     }
 
     @Override
-    public CafeTableResponseDto updateWaiter(Long id, Long userId) throws Exception {
+    public CafeTableResponseDto updateWaiter(Long id, Long userId) {
 
         Optional<CafeTable> getCafeTable = cafeTableRepository.findById(id);
 
         if (getCafeTable.isEmpty()) {
 
-            throw new Exception("Not fund cafe table");
+            throw new RuntimeException("Not fund cafe table");
         }
 
         CafeTable cafeTable = modelMapper.map(getCafeTable, CafeTable.class);
