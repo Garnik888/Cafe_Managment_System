@@ -16,8 +16,6 @@ public class AssortmentOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
     private AssortmentStatus assortmentStatus;
@@ -29,7 +27,7 @@ public class AssortmentOrder {
     @JoinColumn(name = "order_id",nullable = false)
     private Order order;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assortment_id",nullable = false)
     private Assortment assortment;
 

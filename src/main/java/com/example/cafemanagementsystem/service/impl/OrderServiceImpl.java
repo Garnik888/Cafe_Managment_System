@@ -2,11 +2,13 @@ package com.example.cafemanagementsystem.service.impl;
 
 import com.example.cafemanagementsystem.domain.entity.CafeTable;
 import com.example.cafemanagementsystem.domain.entity.Order;
+import com.example.cafemanagementsystem.domain.entity.User;
 import com.example.cafemanagementsystem.domain.enums.OrderStatus;
-import com.example.cafemanagementsystem.dto.responce.AssortmentOrderResponseDto;
 import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
+import com.example.cafemanagementsystem.dto.responce.UserResponseDto;
 import com.example.cafemanagementsystem.repository.CafeTableRepository;
 import com.example.cafemanagementsystem.repository.OrderRepository;
+import com.example.cafemanagementsystem.repository.UserRepository;
 import com.example.cafemanagementsystem.service.OrderService;
 import com.example.cafemanagementsystem.validator.OrderValidator;
 import org.modelmapper.ModelMapper;
@@ -14,8 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -25,16 +30,18 @@ public class OrderServiceImpl implements OrderService {
     private final ModelMapper modelMapper;
     private final CafeTableRepository cafeTableRepository;
     private final AssortmentOrderServiceImpl assortmentOrderService;
+    private  final UserRepository userRepository;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository,
                             ModelMapper modelMapper,
                             CafeTableRepository cafeTableRepository,
-                            AssortmentOrderServiceImpl assortmentOrderService) {
+                            AssortmentOrderServiceImpl assortmentOrderService, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.cafeTableRepository = cafeTableRepository;
         this.assortmentOrderService = assortmentOrderService;
+        this.userRepository = userRepository;
     }
 
 
@@ -51,10 +58,11 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Cafe table is reserved");
         }
 
+
         cafeTable.setReserve(true);
         cafeTableRepository.save(cafeTable);
         order.setOrderStatus(OrderStatus.OPEN);
-        order.setDateTime(LocalDateTime.now());
+        order.setDateTime(Date.valueOf(LocalDate.now()));
 
         CafeTable cafeTable1 = modelMapper.map(cafeTable, CafeTable.class);
         order.setCafeTable(cafeTable1);
@@ -108,9 +116,31 @@ public class OrderServiceImpl implements OrderService {
         OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);
         return orderResponseDto;
     }
+
+    @Override
+    public Map<String, Integer> getOrdersByAllWaiter(LocalDate localDate) {
+
+        Map<String, Integer> usersMap = new HashMap<>();
+
+        List<Order> orders = orderRepository.findAllByDateTime(localDate);
+
+        for (Order order : orders) {
+
+            String userName = order.getCafeTable().getUser().getUsername();
+
+            if(usersMap.containsKey(userName)) {
+
+                Integer count = usersMap.get(userName);
+                count ++;
+
+                usersMap.put(userName, count);
+            }
+
+            usersMap.put(userName, 1);
+        }
+
+        return usersMap;
+    }
+
+
 }
-
-
-
-
-

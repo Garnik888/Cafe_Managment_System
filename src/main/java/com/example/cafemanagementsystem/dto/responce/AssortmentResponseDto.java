@@ -10,6 +10,7 @@ public class AssortmentResponseDto {
     private String name;
     private AssortmentType assortmentType;
 
+
     private Double price;
 
     public AssortmentResponseDto() {
@@ -59,4 +60,12 @@ public class AssortmentResponseDto {
         return Objects.hash(name, assortmentType, price);
     }
 
+    @Override
+    public String toString() {
+        return "AssortmentResponseDto{" +
+                "name='" + name + '\'' +
+                ", assortmentType=" + assortmentType +
+                ", price=" + price +
+                '}';
+    }
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +24,7 @@ public class Order {
     private OrderStatus orderStatus;
 
     @Column(name = "data_time")
-    private LocalDateTime dateTime;
+    private Date dateTime;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,13 +40,13 @@ public class Order {
 
     public Order() {
 
-        this.dateTime = LocalDateTime.now();
+        this.dateTime = Date.valueOf(LocalDate.now());
     }
 
 
     public Order(Long id,
                  OrderStatus orderStatus,
-                 LocalDateTime dateTime,
+               Date dateTime,
                  CafeTable cafeTable,
                  List<AssortmentOrder> assortmentOrderList) {
         this.id = id;
@@ -54,7 +56,7 @@ public class Order {
         this.assortmentOrderList = assortmentOrderList;
     }
 
-    public Order(Long id, OrderStatus orderStatus, LocalDateTime dateTime) {
+    public Order(Long id, OrderStatus orderStatus, Date dateTime) {
         this.id = id;
         this.orderStatus = orderStatus;
         this.dateTime = dateTime;
@@ -109,14 +111,14 @@ public class Order {
         this.assortmentOrderList = assortmentOrderList;
     }
 
-    public LocalDateTime getDateTime() {
+
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
-
 
     @Override
     public boolean equals(Object o) {

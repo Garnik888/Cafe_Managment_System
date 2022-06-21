@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.time.LocalDate;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/order")
@@ -82,5 +84,18 @@ public class OrderController {
         }
     }
 
+    @Operation(summary = "Get Orders by all waiter", security = @SecurityRequirement(name = "bearerAuth"))
+    @PreAuthorize("hasAuthority('MANAGER')")
+    @GetMapping("/localDate")
+    public ResponseEntity<?> getOrdersByAllWaiter(@RequestParam("localDate") LocalDate localDate) {
 
+        Map<String, Integer> orderMapByUser = orderService.getOrdersByAllWaiter(localDate);
+
+        if(orderMapByUser.isEmpty()) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.ok(orderMapByUser);
+    }
 }

@@ -22,9 +22,9 @@ public class AssortmentOrderController {
     }
 
     @Operation(summary = "Save assortment order", security = @SecurityRequirement(name = "bearerAuth"))
-    @PostMapping("/{id}")
+    @PostMapping("/{order_id}")
     @PreAuthorize("hasAuthority('WAITER')")
-    public ResponseEntity<?> saveAssortmentOrder(@PathVariable("id") Long orderId,
+    public ResponseEntity<?> saveAssortmentOrder(@PathVariable("order_id") Long orderId,
                                                  @RequestBody Long assortmentId, Integer count) throws Exception {
 
         AssortmentOrderResponseDto assortmentOrderResponseDto =
@@ -107,4 +107,6 @@ public class AssortmentOrderController {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can not found assortment order");
     }
+
+
 }
