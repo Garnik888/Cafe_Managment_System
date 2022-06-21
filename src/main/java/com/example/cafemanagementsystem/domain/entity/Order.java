@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public class Order {
 
     public Order() {
 
-        this.dateTime = Date.valueOf(LocalDate.now());
+        this.dateTime = Date.valueOf(LocalDate.now().toString());
     }
 
 

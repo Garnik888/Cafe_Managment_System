@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,5 +13,5 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select o from Order o where o.dateTime = ?1")
-    List<Order> findAllByDateTime(LocalDate localDate);
+    List<Order> findAllByDate(Date date);
 }

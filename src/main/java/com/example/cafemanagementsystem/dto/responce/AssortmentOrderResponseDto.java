@@ -7,7 +7,6 @@ public class AssortmentOrderResponseDto {
 
     private AssortmentStatus assortmentStatus;
     private Integer count;
-
     private Assortment assortment;
 
 

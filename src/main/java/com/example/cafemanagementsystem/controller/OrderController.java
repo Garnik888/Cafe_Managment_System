@@ -12,7 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.time.LocalDate;
+import java.sql.Date;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -86,10 +87,10 @@ public class OrderController {
 
     @Operation(summary = "Get Orders by all waiter", security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasAuthority('MANAGER')")
-    @GetMapping("/localDate")
-    public ResponseEntity<?> getOrdersByAllWaiter(@RequestParam("localDate") LocalDate localDate) {
+    @GetMapping("/date")
+    public ResponseEntity<?> getOrdersByAllWaiter(@RequestParam("date") Date date) {
 
-        Map<String, Integer> orderMapByUser = orderService.getOrdersByAllWaiter(localDate);
+        Map<String, Integer> orderMapByUser = orderService.getOrdersByAllWaiter(date);
 
         if(orderMapByUser.isEmpty()) {
 
@@ -97,5 +98,21 @@ public class OrderController {
         }
 
         return ResponseEntity.ok(orderMapByUser);
+    }
+
+    @Operation(summary = "Get Orders in data", security = @SecurityRequirement(name = "bearerAuth"))
+    @PreAuthorize("hasAuthority('MANAGER')")
+    @GetMapping("/all/date")
+
+    public ResponseEntity<?> findAllOrderByData(@RequestParam("date") Date date) {
+
+        List<OrderResponseDto> responseDtoList = orderService.findAllOrderByData(date);
+
+        if(responseDtoList.isEmpty()) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.ok(responseDtoList);
     }
 }

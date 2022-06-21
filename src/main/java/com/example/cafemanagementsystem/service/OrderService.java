@@ -3,7 +3,9 @@ package com.example.cafemanagementsystem.service;
 import com.example.cafemanagementsystem.dto.responce.OrderResponseDto;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
@@ -16,5 +18,7 @@ public interface OrderService {
 
     OrderResponseDto findById(Long tableId) throws UserPrincipalNotFoundException;
 
-    public Map<String, Integer> getOrdersByAllWaiter(LocalDate localDate);
+    public Map<String, Integer> getOrdersByAllWaiter(Date date);
+
+    public List<OrderResponseDto> findAllOrderByData(Date date);
 }

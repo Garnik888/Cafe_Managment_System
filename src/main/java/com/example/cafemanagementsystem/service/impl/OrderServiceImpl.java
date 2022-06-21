@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -118,29 +115,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Map<String, Integer> getOrdersByAllWaiter(LocalDate localDate) {
+    public Map<String, Integer> getOrdersByAllWaiter(Date date) {
 
         Map<String, Integer> usersMap = new HashMap<>();
 
-        List<Order> orders = orderRepository.findAllByDateTime(localDate);
+        List<Order> orders = orderRepository.findAllByDate(date);
 
         for (Order order : orders) {
 
             String userName = order.getCafeTable().getUser().getUsername();
 
-            if(usersMap.containsKey(userName)) {
-
-                Integer count = usersMap.get(userName);
-                count ++;
-
-                usersMap.put(userName, count);
-            }
-
-            usersMap.put(userName, 1);
+            usersMap.put(userName, usersMap.getOrDefault(userName, 0) + 1);
         }
 
         return usersMap;
     }
 
+    public List<OrderResponseDto> findAllOrderByData(Date date) {
 
+        List<OrderResponseDto> responseDtoList = new ArrayList<>();
+
+        List<Order> orders = orderRepository.findAllByDate(date);
+
+        for (Order order : orders) {
+
+            responseDtoList.add(modelMapper.map(order, OrderResponseDto.class));
+        }
+
+        return responseDtoList;
+    }
 }
